@@ -44,10 +44,9 @@ func EventsHandler(w http.ResponseWriter, req *http.Request) {
 		switch innerEvent.(type) {
 		case *slackevents.PinAddedEvent:
 			go bot.InviteToSignup(body)
+			go bot.PublishAppHome(body)
 		case *slackevents.ReactionAddedEvent:
 			go bot.DeleteMessageByReaction(body)
-		case *slackevents.AppHomeOpenedEvent:
-			go bot.ShowAppHome(body)
 		default:
 			fmt.Println("unhandled event")
 		}

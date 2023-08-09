@@ -63,14 +63,14 @@ func SaveBackgroundData(p slack.InteractionCallback, successMessage bool) {
 	form := blocks.SignUpform
 
 	var (
-		skillCategory   []string
+		skills          []string
 		experienceLevel = values[form.ExperienceLevel.BlockId][form.ExperienceLevel.ActionId].SelectedOption
 		gender          = values[form.Gender.BlockId][form.Gender.ActionId].SelectedOption
 	)
 
 	selectedCategories := values[form.SkillCategory.BlockId][form.SkillCategory.ActionId].SelectedOptions
 	for _, item := range selectedCategories {
-		skillCategory = append(skillCategory, item.Value)
+		skills = append(skills, item.Value)
 	}
 
 	user := slack.GetUserProfileParameters{
@@ -88,7 +88,7 @@ func SaveBackgroundData(p slack.InteractionCallback, successMessage bool) {
 	userData := store.User{
 		Email:           profile.Email,
 		Name:            profile.RealName,
-		SkillCategory:   skillCategory,
+		SkillCategories: skills,
 		ExperienceLevel: experienceLevel.Value,
 		Gender:          gender.Value,
 		SlackId:         user.UserID,
@@ -128,7 +128,7 @@ func DeleteMessageByReaction(body []byte) {
 	}
 }
 
-func ShowAppHome(body []byte) {
+func PublishAppHome(body []byte) {
 	var data EventData
 
 	if err := json.Unmarshal(body, &data); err != nil {

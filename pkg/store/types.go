@@ -3,7 +3,7 @@ package store
 type User struct {
 	Email           string
 	Name            string
-	SkillCategory   []string
+	SkillCategories []string
 	ExperienceLevel string
 	Gender          string
 	SlackId         string

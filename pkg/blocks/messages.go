@@ -35,7 +35,7 @@ func SignupSuccessMessage(userId string, p slack.InteractionCallback) slack.MsgO
 	var nextRotation = "*Sunday, " + day + " " + month + ", " + year + "*"
 
 	textContent :=
-		"You're all set! <@" + userId + "> \n\n You've been added to our accountability partner rotations, you'll be paired with someone in your skill category every week. Next partner pairing will be done on " + nextRotation + " which is in *" + daysTime + " days time.* \n\n For now, you can introduce yourself in " + utils.ChannelIntroductions + " or join one of the following channels to connect with others. \n\n>" + utils.ChannelDesign + "\n>" + utils.ChannelEngineering + "\n>" + utils.ChannelSecurityCompliance + "\n>" + utils.ChannelContentManagement + "\n>" + utils.ChannelDataAi
+		"You're all set! <@" + userId + "> \n\n You've been added to our accountability partner rotations, you'll be paired with someone in your skill category every week. Next pair shuffle will be done on " + nextRotation + " which is in *" + daysTime + " days time.* \n\n For now, you can introduce yourself in " + utils.ChannelIntroductions + " or join one of the following channels to connect with others. \n\n>" + utils.ChannelDesign + "\n>" + utils.ChannelEngineering + "\n>" + utils.ChannelSecurityCompliance + "\n>" + utils.ChannelContentManagement + "\n>" + utils.ChannelDataAi
 
 	paragraphs := slack.NewTextBlockObject("mrkdwn", textContent, false, false)
 	textBlock := slack.NewSectionBlock(paragraphs, nil, nil)

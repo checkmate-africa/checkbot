@@ -3,8 +3,11 @@ package store
 import "github.com/aws/aws-sdk-go/service/dynamodb"
 
 var DB *dynamodb.DynamoDB
-var UsersTable string = "checkmateafrica-users"
-var PairsTable string = "checkmateafrica-pairs"
+
+const (
+	UsersTable = "checkmateafrica-users"
+	PairsTable = "checkmateafrica-pairs"
+)
 
 // aws dynamodb create-table --endpoint-url http://localhost:8000 \
 //     --table-name checkmateafrica-users \
@@ -15,6 +18,15 @@ var PairsTable string = "checkmateafrica-pairs"
 //     --provisioned-throughput \
 //         ReadCapacityUnits=5,WriteCapacityUnits=5 \
 //     --table-class STANDARD
+
+// dummyUser := User{
+// 	Email:           "dummy@dummy.com",
+// 	Name:            "John James",
+// 	ExperienceLevel: "Beginner",
+// 	SkillCategories: []string{"Frontend Development, Backend Development, Cloud Engineering, DevOps"},
+// 	Gender:          "Male",
+// 	SlackId:         "U01DYTEDHS8",
+// }
 
 /*
 	Store options for partners

@@ -1,28 +1,19 @@
 package blocks
 
 import (
+	"github.com/checkmateafrica/users/pkg/utils"
 	"github.com/gosimple/slug"
 	"github.com/slack-go/slack"
 )
 
-var skillCategoryOptions = []string{
-	"3D Design",
-	"Brand Design",
-	"Product/UI/UX Design",
-	"Motion Design",
-	"Frontend Development",
-	"Backend Development",
-	"Mobile Development",
-	"Cloud Engineering",
-	"Data Science/AI/ML",
-	"Cyber Security",
-	"DevOps/SRE",
-	"Writing/Technical Writing",
-	"Product Management",
-	"Developer Advocacy",
-	"Art and Illustrations",
-	"Webflow/Wordpress",
-	"Legal/Tech Law",
+func skillCategoryOptions() []string {
+	var options []string
+
+	for _, value := range utils.SkillDomains {
+		options = append(options, value...)
+	}
+
+	return options
 }
 
 var expereienceLevelOptions = []string{
@@ -47,13 +38,12 @@ const (
 
 var SignUpform = SignUpformType{
 	SkillCategory: FormField{
-
 		Placeholder: "Select one or more skills",
 		Hint:        "You can select more than one",
 		BlockId:     "block" + slug.Make(labelSkillCategory),
 		ActionId:    "action" + slug.Make(labelSkillCategory),
+		Options:     skillCategoryOptions(),
 		Label:       labelSkillCategory,
-		Options:     skillCategoryOptions,
 		Multi:       true,
 	},
 
@@ -62,8 +52,8 @@ var SignUpform = SignUpformType{
 		Hint:        "Don't worry, pairing won't be 'strictly' limited to your experience level",
 		BlockId:     "block" + slug.Make(labelExperienceLevel),
 		ActionId:    "action" + slug.Make(labelExperienceLevel),
-		Label:       labelExperienceLevel,
 		Options:     expereienceLevelOptions,
+		Label:       labelExperienceLevel,
 		Multi:       false,
 	},
 
@@ -72,8 +62,8 @@ var SignUpform = SignUpformType{
 		Hint:        "We use this information to make our community a safe space for all",
 		BlockId:     "block" + slug.Make(labelGender),
 		ActionId:    "action" + slug.Make(labelGender),
-		Label:       labelGender,
 		Options:     genderOptions,
+		Label:       labelGender,
 		Multi:       false,
 	},
 }

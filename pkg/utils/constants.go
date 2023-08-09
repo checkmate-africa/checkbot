@@ -13,3 +13,37 @@ const (
 	ChannelContentManagement  = "<#C05LGQ591SS>"
 	ChannelDataAi             = "<#C05L8TCRN31>"
 )
+
+var SkillDomains = map[string][]string{
+	"design": {
+		"3D Design",
+		"Brand Design",
+		"Product/UI/UX Design",
+		"Motion Design",
+		"Art and Illustrations",
+	},
+
+	"engineering": {
+		"Frontend Development",
+		"Backend Development",
+		"Mobile Development",
+		"Cloud Engineering",
+		"DevOps/SRE",
+	},
+
+	"data-science-and-ai": {
+		"Data Science/AI/ML",
+	},
+
+	"content-and-management": {
+		"Developer Advocacy",
+		"Writing/Technical Writing",
+		"Webflow/Wordpress",
+		"Product Management",
+	},
+
+	"security-and-compliance": {
+		"Cyber Security",
+		"Legal/Tech Law",
+	},
+}

@@ -2,6 +2,7 @@ package store
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
@@ -16,19 +17,19 @@ func SaveUserData(u User) {
 	user, err := dynamodbattribute.MarshalMap(u)
 
 	if err != nil {
-		fmt.Println("Marshal Error: ", err)
+		log.Println(err)
 		return
 	}
 
 	input := &dynamodb.PutItemInput{
 		Item:      user,
-		TableName: aws.String(TableName),
+		TableName: aws.String(UsersTable),
 	}
 
 	_, err = DB.PutItem(input)
 
 	if err != nil {
-		fmt.Println("Marshal Error: ", err)
+		log.Println(err)
 		return
 	}
 

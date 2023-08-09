@@ -4,13 +4,16 @@ import (
 	"fmt"
 
 	"github.com/checkmateafrica/users/pkg/bot"
+	"github.com/checkmateafrica/users/pkg/utils"
 	"github.com/slack-go/slack"
 )
 
 func handleViewSubmission(p slack.InteractionCallback) {
 	switch p.View.CallbackID {
-	case bot.CallbackSignupModal:
-		bot.SaveSignupData(p)
+	case utils.BlockIdSignupButton:
+		bot.SaveBackgroundData(p, true)
+	case utils.BlockIdSettingsButton:
+		bot.SaveBackgroundData(p, false)
 	default:
 		fmt.Println("unhandled submission", p.View.CallbackID)
 	}
@@ -19,8 +22,10 @@ func handleViewSubmission(p slack.InteractionCallback) {
 func handleBlockAction(p slack.InteractionCallback) {
 	for _, blockAction := range p.ActionCallback.BlockActions {
 		switch blockAction.ActionID {
-		case bot.ActionSignupButtonClick:
-			bot.ShowSignupModal(p)
+		case utils.ActionIdOpenModal:
+			payload := p
+			payload.BlockID = blockAction.BlockID
+			bot.ShowBackgroundDataModal(payload)
 		default:
 			fmt.Println("unhandled interaction")
 		}

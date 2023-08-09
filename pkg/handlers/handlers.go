@@ -42,14 +42,14 @@ func EventsHandler(w http.ResponseWriter, req *http.Request) {
 		innerEvent := eventsAPIEvent.InnerEvent.Data
 
 		switch innerEvent.(type) {
-		// change to team joined before deploy
 		case *slackevents.PinAddedEvent:
 			go bot.InviteToSignup(body)
 		case *slackevents.ReactionAddedEvent:
 			go bot.DeleteMessageByReaction(body)
+		case *slackevents.AppHomeOpenedEvent:
+			go bot.ShowAppHome(body)
 		default:
 			fmt.Println("unhandled event")
-			return
 		}
 	}
 

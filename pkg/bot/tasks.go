@@ -1,7 +1,11 @@
 package bot
 
-func GenerateAccountabilityPairs() {
+import "github.com/checkmateafrica/users/pkg/store"
 
+func GenerateAccountabilityPairs() {
+	var pairs []store.Pair
+
+	store.SavePairs(pairs)
 }
 
 func CreateFocusRooms() {

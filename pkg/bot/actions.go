@@ -6,7 +6,9 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/checkmateafrica/users/pkg/blocks"
 	"github.com/checkmateafrica/users/pkg/store"
+	"github.com/checkmateafrica/users/pkg/utils"
 	"github.com/slack-go/slack"
 	"github.com/slack-go/slack/slackevents"
 )
@@ -39,7 +41,7 @@ func InviteToSignup(body []byte) {
 		IncludeLabels: false,
 	}
 
-	message := craftSignupMessage(user.UserID)
+	message := blocks.SignupInviteMessage(user.UserID)
 
 	if _, _, err := api.PostMessage(data.User, message); err != nil {
 		log.Println(err)
@@ -47,8 +49,8 @@ func InviteToSignup(body []byte) {
 	}
 }
 
-func ShowSignupModal(p slack.InteractionCallback) {
-	modal := craftSignUpModal(p)
+func ShowBackgroundDataModal(p slack.InteractionCallback) {
+	modal := blocks.BackgroundDataModal(p)
 
 	if _, err := api.OpenView(p.TriggerID, modal); err != nil {
 		log.Println(err)
@@ -56,17 +58,17 @@ func ShowSignupModal(p slack.InteractionCallback) {
 	}
 }
 
-func SaveSignupData(p slack.InteractionCallback) {
+func SaveBackgroundData(p slack.InteractionCallback, successMessage bool) {
 	values := p.View.State.Values
-	form := signUpform
+	form := blocks.SignUpform
 
 	var (
 		skillCategory   []string
-		experienceLevel = values[form.experienceLevel.blockId][form.experienceLevel.actionId].SelectedOption
-		gender          = values[form.gender.blockId][form.gender.actionId].SelectedOption
+		experienceLevel = values[form.ExperienceLevel.BlockId][form.ExperienceLevel.ActionId].SelectedOption
+		gender          = values[form.Gender.BlockId][form.Gender.ActionId].SelectedOption
 	)
 
-	selectedCategories := values[form.skillCategory.blockId][form.skillCategory.actionId].SelectedOptions
+	selectedCategories := values[form.SkillCategory.BlockId][form.SkillCategory.ActionId].SelectedOptions
 	for _, item := range selectedCategories {
 		skillCategory = append(skillCategory, item.Value)
 	}
@@ -84,22 +86,25 @@ func SaveSignupData(p slack.InteractionCallback) {
 	}
 
 	userData := store.User{
-		Name:            profile.DisplayName,
 		Email:           profile.Email,
+		Name:            profile.RealName,
 		SkillCategory:   skillCategory,
 		ExperienceLevel: experienceLevel.Value,
 		Gender:          gender.Value,
+		SlackId:         user.UserID,
 	}
 
-	originMsgParams := strings.Split(p.View.PrivateMetadata, MetedataSeperator)
-	api.DeleteMessage(originMsgParams[0], originMsgParams[1])
+	if successMessage {
+		originMsgParams := strings.Split(p.View.PrivateMetadata, utils.MetedataSeperator)
+		api.DeleteMessage(originMsgParams[0], originMsgParams[1])
+		SendSignupSuccessMessage(user.UserID, p)
+	}
 
 	store.SaveUserData(userData)
-	SendSignupSuccessMessage(user.UserID, p)
 }
 
 func SendSignupSuccessMessage(userId string, p slack.InteractionCallback) {
-	message := craftSignupSuccessMessage(userId, p)
+	message := blocks.SignupSuccessMessage(userId, p)
 
 	if _, _, err := api.PostMessage(userId, message); err != nil {
 		log.Println(err)
@@ -120,5 +125,34 @@ func DeleteMessageByReaction(body []byte) {
 			log.Println(err)
 			return
 		}
+	}
+}
+
+func ShowAppHome(body []byte) {
+	var data EventData
+
+	if err := json.Unmarshal(body, &data); err != nil {
+		log.Println(err)
+		return
+	}
+
+	user := slack.GetUserProfileParameters{
+		UserID:        data.User,
+		IncludeLabels: false,
+	}
+
+	profile, err := api.GetUserProfile(&user)
+
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	partner := store.GetPartner(profile.Email)
+	view := blocks.AppHomeContent(partner)
+
+	if _, err = api.PublishView(user.UserID, view, ""); err != nil {
+		log.Println(err)
+		return
 	}
 }

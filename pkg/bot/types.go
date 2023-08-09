@@ -13,18 +13,3 @@ type Event struct {
 type EventData struct {
 	Event `json:"event"`
 }
-
-type FormField struct {
-	placeholder string
-	blockId     string
-	actionId    string
-	label       string
-	options     []string
-	multi       bool
-}
-
-type SignUpform struct {
-	skillCategory   FormField
-	experienceLevel FormField
-	gender          FormField
-}

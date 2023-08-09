@@ -9,9 +9,10 @@ import (
 )
 
 func BackgroundDataModal(p slack.InteractionCallback, user *store.User) slack.ModalViewRequest {
-	const infoText = "Please fill out the form below. We'll match you up with people who have similar skillset and experience as you."
-
-	// var user = store.User{}
+	const (
+		desc1 = "Please fill out the form below. We'll match you up with people who have similar skillset and experience as you."
+		desc2 = "Update your accountability profile settings. Changes will be used in subsequest partner shuffles."
+	)
 
 	var (
 		selectedCategories *[]string
@@ -29,15 +30,20 @@ func BackgroundDataModal(p slack.InteractionCallback, user *store.User) slack.Mo
 	expereienceLevelSelect := selectField(SignUpform.ExperienceLevel, selectedLevel, nil)
 	genderSelect := selectField(SignUpform.Gender, selectedGender, nil)
 
-	infoParagraph := slack.NewTextBlockObject("mrkdwn", infoText, false, false)
-	infoBlock := slack.NewSectionBlock(infoParagraph, nil, nil)
-
 	spacer := slack.NewSectionBlock(slack.NewTextBlockObject("mrkdwn", "\n", false, false), nil, nil)
+
+	modalDescriptions := map[string]string{
+		utils.BlockIdSignupButton:   desc1,
+		utils.BlockIdSettingsButton: desc2,
+	}
+
+	modalDescText := slack.NewTextBlockObject("mrkdwn", modalDescriptions[p.BlockID], false, false)
+	modalDescBlock := slack.NewSectionBlock(modalDescText, nil, nil)
 
 	blocks := slack.Blocks{
 		BlockSet: []slack.Block{
 			spacer,
-			infoBlock,
+			modalDescBlock,
 			spacer,
 			skillCategorySelect,
 			spacer,

@@ -80,6 +80,7 @@ var SignUpform = SignUpformType{
 
 func selectField(f FormField, initialOption *string, initialOptions *[]string) *slack.InputBlock {
 	var optionBlocks []*slack.OptionBlockObject
+	var selectElement slack.BlockElement
 
 	for _, s := range f.Options {
 		label := slack.NewTextBlockObject("plain_text", s, false, false)
@@ -90,8 +91,6 @@ func selectField(f FormField, initialOption *string, initialOptions *[]string) *
 	placeholderText := slack.NewTextBlockObject("plain_text", f.Placeholder, true, false)
 	labeltext := slack.NewTextBlockObject("plain_text", f.Label, false, false)
 	hintText := slack.NewTextBlockObject("plain_text", f.Hint, false, false)
-
-	var selectElement slack.BlockElement
 
 	if f.Multi {
 		multiSelect := slack.MultiSelectBlockElement{

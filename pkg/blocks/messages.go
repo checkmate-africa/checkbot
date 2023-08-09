@@ -7,7 +7,7 @@ import (
 
 func SignupInviteMessage(userId string) slack.MsgOption {
 	textContent :=
-		"Hola <@" + userId + ">! :tada: \n\n Welcome to checkmate, we are thrilled to have you here in our community, whether you're a pro, a curious learner, or somewhere in between, you're in the right place. \n\n \n\n Let's get you signed up for accountability pairings."
+		"Hola <@" + userId + ">! :tada: \n\nWelcome to checkmate, we are thrilled to have you here in our community, whether you're a pro, a curious learner, or somewhere in between, you're in the right place. \n\n \n\nLet's get you signed up for accountability pairings."
 
 	paragraphs := slack.NewTextBlockObject("mrkdwn", textContent, false, false)
 	textBlock := slack.NewSectionBlock(paragraphs, nil, nil)
@@ -35,7 +35,7 @@ func SignupSuccessMessage(userId string, p slack.InteractionCallback) slack.MsgO
 	var nextRotation = "*Sunday, " + day + " " + month + ", " + year + "*"
 
 	textContent :=
-		"You're all set! <@" + userId + "> \n\n You've been added to our accountability partner rotations, you'll be paired with someone in your skill category every week. Next pair shuffle will be done on " + nextRotation + " which is in *" + daysTime + " days time.* \n\n For now, you can introduce yourself in " + utils.ChannelIntroductions + " or join one of the following channels to connect with others. \n\n>" + utils.ChannelDesign + "\n>" + utils.ChannelEngineering + "\n>" + utils.ChannelSecurityCompliance + "\n>" + utils.ChannelContentManagement + "\n>" + utils.ChannelDataAi
+		"You're all set! <@" + userId + "> \n\nYou've been added to our accountability partner rotations, you'll be paired with someone in your skill category every week. Next pair shuffle will be done on " + nextRotation + " which is in *" + daysTime + " days time.* \n\nFor now, you can introduce yourself in " + utils.ChannelIntroductions + " or join one of the following channels to connect with others. \n\n>" + utils.ChannelDesign + "\n>" + utils.ChannelEngineering + "\n>" + utils.ChannelSecurityCompliance + "\n>" + utils.ChannelContentManagement + "\n>" + utils.ChannelDataAi
 
 	paragraphs := slack.NewTextBlockObject("mrkdwn", textContent, false, false)
 	textBlock := slack.NewSectionBlock(paragraphs, nil, nil)

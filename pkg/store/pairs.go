@@ -38,11 +38,11 @@ func GetPartner(email string) *User {
 		return nil
 	}
 
-	partner := User{}
+	pair := Pair{}
 
-	if err = dynamodbattribute.UnmarshalMap(result.Item, &partner); err != nil {
+	if err = dynamodbattribute.UnmarshalMap(result.Item, &pair); err != nil {
 		log.Println(err)
 	}
 
-	return &partner
+	return &pair.Partner
 }

@@ -5,6 +5,7 @@ type FormField struct {
 	BlockId     string
 	ActionId    string
 	Label       string
+	Hint        string
 	Options     []string
 	Multi       bool
 }

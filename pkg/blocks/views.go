@@ -8,12 +8,26 @@ import (
 	"github.com/slack-go/slack"
 )
 
-func BackgroundDataModal(p slack.InteractionCallback) slack.ModalViewRequest {
+func BackgroundDataModal(p slack.InteractionCallback, user *store.User) slack.ModalViewRequest {
 	const infoText = "Please fill out the form below. We'll match you up with people who have similar skillset and experience as you."
 
-	skillCategorySelect := selectField(SignUpform.SkillCategory)
-	expereienceLevelSelect := selectField(SignUpform.ExperienceLevel)
-	genderSelect := selectField(SignUpform.Gender)
+	// var user = store.User{}
+
+	var (
+		selectedCategories *[]string
+		selectedLevel      *string
+		selectedGender     *string
+	)
+
+	if user != nil {
+		selectedCategories = &user.SkillCategories
+		selectedLevel = &user.ExperienceLevel
+		selectedGender = &user.Gender
+	}
+
+	skillCategorySelect := selectField(SignUpform.SkillCategory, nil, selectedCategories)
+	expereienceLevelSelect := selectField(SignUpform.ExperienceLevel, selectedLevel, nil)
+	genderSelect := selectField(SignUpform.Gender, selectedGender, nil)
 
 	infoParagraph := slack.NewTextBlockObject("mrkdwn", infoText, false, false)
 	infoBlock := slack.NewSectionBlock(infoParagraph, nil, nil)
@@ -34,7 +48,12 @@ func BackgroundDataModal(p slack.InteractionCallback) slack.ModalViewRequest {
 		},
 	}
 
-	titleText := slack.NewTextBlockObject("plain_text", "Accountability Sign up", false, false)
+	modalTitles := map[string]string{
+		utils.BlockIdSignupButton:   "Accountability Sign up",
+		utils.BlockIdSettingsButton: "Accountability Profile",
+	}
+
+	titleText := slack.NewTextBlockObject("plain_text", modalTitles[p.BlockID], false, false)
 	closeButtonText := slack.NewTextBlockObject("plain_text", "Cancel", false, false)
 	submitButtonText := slack.NewTextBlockObject("plain_text", "Submit", false, false)
 
@@ -50,30 +69,6 @@ func BackgroundDataModal(p slack.InteractionCallback) slack.ModalViewRequest {
 	}
 
 	return modalRequest
-}
-
-func selectField(f FormField) *slack.InputBlock {
-	var optionBlocks []*slack.OptionBlockObject
-
-	for _, s := range f.Options {
-		label := slack.NewTextBlockObject("plain_text", s, false, false)
-		newOption := slack.NewOptionBlockObject(s, label, nil)
-
-		optionBlocks = append(optionBlocks, newOption)
-	}
-
-	placeholderText := slack.NewTextBlockObject("plain_text", f.Placeholder, true, false)
-	labeltext := slack.NewTextBlockObject("plain_text", f.Label, false, false)
-
-	var selectType string
-	if f.Multi {
-		selectType = "multi_static_select"
-	} else {
-		selectType = "static_select"
-	}
-
-	selectElement := slack.NewOptionsSelectBlockElement(selectType, placeholderText, f.ActionId, optionBlocks...)
-	return slack.NewInputBlock(f.BlockId, labeltext, nil, selectElement)
 }
 
 func AppHomeContent(partner *store.User) slack.HomeTabViewRequest {

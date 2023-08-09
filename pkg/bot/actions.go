@@ -50,7 +50,24 @@ func InviteToSignup(body []byte) {
 }
 
 func ShowBackgroundDataModal(p slack.InteractionCallback) {
-	modal := blocks.BackgroundDataModal(p)
+	var user *store.User = nil
+
+	if p.BlockID == utils.BlockIdSettingsButton {
+		params := slack.GetUserProfileParameters{
+			UserID:        p.User.ID,
+			IncludeLabels: false,
+		}
+
+		profile, err := api.GetUserProfile(&params)
+
+		if err != nil {
+			log.Println(err)
+		} else {
+			user = store.GetUser(profile.Email)
+		}
+	}
+
+	modal := blocks.BackgroundDataModal(p, user)
 
 	if _, err := api.OpenView(p.TriggerID, modal); err != nil {
 		log.Println(err)

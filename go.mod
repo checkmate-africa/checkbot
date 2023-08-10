@@ -1,4 +1,4 @@
-module github.com/checkmateafrica/users
+module github.com/checkmateafrica/accountability-bot
 
 go 1.20
 

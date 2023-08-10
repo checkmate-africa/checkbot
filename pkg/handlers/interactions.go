@@ -3,8 +3,8 @@ package handlers
 import (
 	"fmt"
 
-	"github.com/checkmateafrica/users/pkg/bot"
-	"github.com/checkmateafrica/users/pkg/utils"
+	"github.com/checkmateafrica/accountability-bot/pkg/bot"
+	"github.com/checkmateafrica/accountability-bot/pkg/utils"
 	"github.com/slack-go/slack"
 )
 

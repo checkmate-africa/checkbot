@@ -3,8 +3,8 @@ package blocks
 import (
 	"strings"
 
-	"github.com/checkmateafrica/users/pkg/store"
-	"github.com/checkmateafrica/users/pkg/utils"
+	"github.com/checkmateafrica/accountability-bot/pkg/store"
+	"github.com/checkmateafrica/accountability-bot/pkg/utils"
 	"github.com/slack-go/slack"
 )
 

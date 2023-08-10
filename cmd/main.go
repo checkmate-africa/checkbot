@@ -9,8 +9,8 @@ import (
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
-	"github.com/checkmateafrica/users/pkg/handlers"
-	"github.com/checkmateafrica/users/pkg/store"
+	"github.com/checkmateafrica/accountability-bot/pkg/handlers"
+	"github.com/checkmateafrica/accountability-bot/pkg/store"
 	"github.com/gorilla/mux"
 )
 
@@ -35,12 +35,10 @@ func main() {
 	port := ":4000"
 	router := mux.NewRouter().StrictSlash(true)
 
-	router.HandleFunc("/", handlers.DefaultHandler).Methods("GET")
 	router.HandleFunc("/event", handlers.EventsHandler).Methods("POST")
 	router.HandleFunc("/interaction", handlers.InteractionsHandler).Methods("POST")
 
 	fmt.Println("listening on port", port)
-
 	log.Fatal(http.ListenAndServe(port, router))
 
 	// lambda.Start(httpadapter.New(router).ProxyWithContext)

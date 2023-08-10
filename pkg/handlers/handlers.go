@@ -7,14 +7,10 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/checkmateafrica/users/pkg/bot"
+	"github.com/checkmateafrica/accountability-bot/pkg/bot"
 	"github.com/slack-go/slack"
 	"github.com/slack-go/slack/slackevents"
 )
-
-func DefaultHandler(w http.ResponseWriter, req *http.Request) {
-	w.Write([]byte("Kwame is running!"))
-}
 
 func EventsHandler(w http.ResponseWriter, req *http.Request) {
 	body, err := io.ReadAll(req.Body)
@@ -76,4 +72,8 @@ func InteractionsHandler(w http.ResponseWriter, req *http.Request) {
 
 	handler := interactionHandlers[payload.Type]
 	go handler(payload)
+}
+
+func ShuffleHandler(w http.ResponseWriter, req *http.Request) {
+	w.WriteHeader(http.StatusOK)
 }

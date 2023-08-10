@@ -1,7 +1,7 @@
 package blocks
 
 import (
-	"github.com/checkmateafrica/users/pkg/utils"
+	"github.com/checkmateafrica/accountability-bot/pkg/utils"
 	"github.com/gosimple/slug"
 	"github.com/slack-go/slack"
 )

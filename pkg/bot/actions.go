@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/checkmateafrica/users/pkg/blocks"
-	"github.com/checkmateafrica/users/pkg/store"
-	"github.com/checkmateafrica/users/pkg/utils"
+	"github.com/checkmateafrica/accountability-bot/pkg/blocks"
+	"github.com/checkmateafrica/accountability-bot/pkg/store"
+	"github.com/checkmateafrica/accountability-bot/pkg/utils"
 	"github.com/slack-go/slack"
 	"github.com/slack-go/slack/slackevents"
 )
@@ -121,7 +121,7 @@ func SaveBackgroundData(p slack.InteractionCallback, successMessage bool) {
 }
 
 func SendSignupSuccessMessage(userId string, p slack.InteractionCallback) {
-	message := blocks.SignupSuccessMessage(userId, p)
+	message := blocks.SignupSuccessMessage(userId)
 
 	if _, _, err := api.PostMessage(userId, message); err != nil {
 		log.Println(err)

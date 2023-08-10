@@ -1,7 +1,8 @@
 package blocks
 
 import (
-	"github.com/checkmateafrica/users/pkg/utils"
+	"github.com/checkmateafrica/accountability-bot/pkg/store"
+	"github.com/checkmateafrica/accountability-bot/pkg/utils"
 	"github.com/slack-go/slack"
 )
 
@@ -30,7 +31,7 @@ func SignupInviteMessage(userId string) slack.MsgOption {
 	)
 }
 
-func SignupSuccessMessage(userId string, p slack.InteractionCallback) slack.MsgOption {
+func SignupSuccessMessage(userId string) slack.MsgOption {
 	day, month, year, daysTime := utils.GetNextDayOfWeek(0)
 	var nextRotation = "*Sunday, " + day + " " + month + ", " + year + "*"
 
@@ -43,4 +44,8 @@ func SignupSuccessMessage(userId string, p slack.InteractionCallback) slack.MsgO
 	return slack.MsgOptionBlocks(
 		textBlock,
 	)
+}
+
+func GeneralPairsNotificationMessage(pairs [][]store.User, p slack.InteractionCallback) {
+
 }

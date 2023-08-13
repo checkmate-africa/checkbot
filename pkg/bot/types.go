@@ -4,12 +4,12 @@ type EventItem struct {
 	Ts string `json:"ts"`
 }
 
-type Event struct {
+type SlackEvent struct {
 	Reaction string    `json:"reaction"`
 	User     string    `json:"user"`
 	Item     EventItem `json:"item"`
 }
 
-type EventData struct {
-	Event `json:"event"`
+type SlackEventData struct {
+	SlackEvent `json:"event"`
 }

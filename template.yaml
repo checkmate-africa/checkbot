@@ -1,0 +1,58 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  cab-app
+
+  Checkmate accountability bot SAM
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 10
+    MemorySize: 128
+
+Resources:
+  EventGatewayFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: lambda/event/gateway
+      Handler: event-gateway
+      Runtime: go1.x
+      Architectures:
+        - x86_64
+      Events:
+        CatchAll:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /events
+            Method: POST
+  EventTaskFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: lambda/event/task
+      Handler: event-task
+      Runtime: go1.x
+      Architectures:
+        - x86_64
+  InteractionGatewayFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambda/interaction/gateway
+      Handler: interaction-gateway
+      Runtime: go1.x
+      Architectures:
+        - x86_64
+      Events:
+        CatchAll:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /interactions
+            Method: POST
+  InteractionTaskFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: lambda/interaction/task
+      Handler: interaction-task
+      Runtime: go1.x
+      Architectures:
+        - x86_64

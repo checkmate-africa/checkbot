@@ -3,7 +3,6 @@ package bot
 import (
 	"encoding/json"
 	"log"
-	"net/http"
 	"strings"
 
 	"github.com/checkmateafrica/accountability-bot/pkg/blocks"
@@ -15,23 +14,20 @@ import (
 
 var api = slack.New("xoxb-1465680528901-5671214476405-XpVXLaeSEoqdKCKPjZEDOpMH")
 
-func VerifyUrl(w http.ResponseWriter, body []byte) {
+func VerifyUrl(body string) *slackevents.ChallengeResponse {
 	var res *slackevents.ChallengeResponse
 
-	if err := json.Unmarshal(body, &res); err != nil {
+	if err := json.Unmarshal([]byte(body), &res); err != nil {
 		log.Println(err)
-		w.WriteHeader(http.StatusInternalServerError)
-
-		return
 	}
 
-	w.Write(body)
+	return res
 }
 
-func InviteToSignup(body []byte) {
-	var data EventData
+func InviteToSignup(body string) {
+	var data SlackEventData
 
-	if err := json.Unmarshal(body, &data); err != nil {
+	if err := json.Unmarshal([]byte(body), &data); err != nil {
 		log.Println(err)
 		return
 	}
@@ -129,10 +125,10 @@ func SendSignupSuccessMessage(userId string, p slack.InteractionCallback) {
 	}
 }
 
-func DeleteMessageByReaction(body []byte) {
-	var data EventData
+func DeleteMessageByReaction(body string) {
+	var data SlackEventData
 
-	if err := json.Unmarshal(body, &data); err != nil {
+	if err := json.Unmarshal([]byte(body), &data); err != nil {
 		log.Println(err)
 		return
 	}
@@ -145,10 +141,10 @@ func DeleteMessageByReaction(body []byte) {
 	}
 }
 
-func PublishAppHome(body []byte) {
-	var data EventData
+func PublishAppHome(body string) {
+	var data SlackEventData
 
-	if err := json.Unmarshal(body, &data); err != nil {
+	if err := json.Unmarshal([]byte(body), &data); err != nil {
 		log.Println(err)
 		return
 	}

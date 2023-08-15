@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 
 	"github.com/aws/aws-lambda-go/lambda"
@@ -24,7 +23,7 @@ func handler(req utils.InvokeRequestPayload) error {
 	case *slackevents.ReactionAddedEvent:
 		bot.DeleteMessageByReaction(req.Body)
 	default:
-		fmt.Println("unhandled event")
+		log.Println("unhandled event")
 	}
 
 	return nil

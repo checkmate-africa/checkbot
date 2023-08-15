@@ -1,7 +1,6 @@
 package blocks
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/checkmateafrica/accountability-bot/pkg/store"
@@ -79,7 +78,6 @@ func BackgroundDataModal(p slack.InteractionCallback, user *store.User) slack.Mo
 }
 
 func AppHomeContent(partner *store.User) slack.HomeTabViewRequest {
-	fmt.Println("publishing view ???????????")
 	var blocks slack.Blocks
 
 	headerCtaButtonText := slack.NewTextBlockObject("plain_text", "Settings", false, false)

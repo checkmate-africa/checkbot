@@ -23,6 +23,7 @@ func handler(req events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse
 	schema.NewDecoder().Decode(interactionPayload, decoded)
 
 	if err := json.Unmarshal([]byte(decoded["payload"][0]), &interactionPayload); err != nil {
+		log.Println(err)
 		return utils.ApiResponse(http.StatusBadRequest, "")
 	}
 

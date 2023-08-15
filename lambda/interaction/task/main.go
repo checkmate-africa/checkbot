@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/aws/aws-lambda-go/lambda"
@@ -38,7 +37,7 @@ func handleViewSubmission(p slack.InteractionCallback) {
 	case utils.BlockIdSettingsButton:
 		bot.SaveBackgroundData(p, false)
 	default:
-		fmt.Println("unhandled submission", p.View.CallbackID)
+		log.Println("unhandled submission")
 	}
 }
 
@@ -50,7 +49,7 @@ func handleBlockAction(p slack.InteractionCallback) {
 			payload.BlockID = blockAction.BlockID
 			bot.ShowBackgroundDataModal(payload)
 		default:
-			fmt.Println("unhandled interaction")
+			log.Println("unhandled interaction")
 		}
 	}
 }

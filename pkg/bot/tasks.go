@@ -1,103 +1,91 @@
 package bot
 
 import (
+	"math"
+
 	"github.com/checkmateafrica/accountability-bot/pkg/store"
 	"github.com/checkmateafrica/accountability-bot/pkg/utils"
 )
 
-func GenerateAccountabilityPairs() {
-	var pairs []store.Pair
-
-	// fetch users
-	// run algorithm
-	// send message
-
-	store.SavePairs(pairs)
-}
-
 func GeneratePairs(users []store.User) [][]store.User {
 	var pairs [][]store.User
+	var pairedUsers = make(map[int]bool)
 
+	/* create pairs of users with
+	at least one matching skill category
+	*/
 	for i, userA := range users {
+		if pairedUsers[i] {
+			continue
+		}
+
 		for j := i + 1; j < len(users); j++ {
+			if pairedUsers[j] {
+				continue
+			}
+
 			userB := users[j]
-			commonSkill := findCommonSkill(userA.SkillCategories, userB.SkillCategories)
+			commonSkill := utils.FindCommonSkill(userA.SkillCategories, userB.SkillCategories)
 
 			if commonSkill != "" {
-				// update both users in database
 				pairs = append(pairs, []store.User{userA, userB})
+				pairedUsers[i] = true
+				pairedUsers[j] = true
+				break
 			}
 		}
 	}
 
-	// If no common skill pairs found, try same parent-category
-	if len(pairs) == 0 {
+	/* if there are unpaired users left
+	due to no matching skills, match
+	using parent category
+	*/
+	if len(pairs) != int(math.Round(float64(len(users)/2)+0.5)) {
 		for i, userA := range users {
+			if pairedUsers[i] {
+				continue
+			}
+
 			for j := i + 1; j < len(users); j++ {
+				if pairedUsers[j] {
+					continue
+				}
+
 				userB := users[j]
-				commonParent := findCommonParent(userA.SkillCategories, userB.SkillCategories)
+				commonParent := utils.FindCommonParent(userA.SkillCategories, userB.SkillCategories)
 
 				if commonParent != "" {
-					// update both users in database
 					pairs = append(pairs, []store.User{userA, userB})
+					pairedUsers[i] = true
+					pairedUsers[j] = true
+					break
 				}
 			}
 		}
 	}
 
-	// If still no pairs found, match users randomly
-	if len(pairs) == 0 {
-		for i := 0; i < len(users); i += 2 {
-			if i+1 < len(users) {
-				// update both users in database
-				pairs = append(pairs, []store.User{users[i], users[i+1]})
+	/* if there are still unpaired users left
+	due to no matching parent category,
+	pair randomly
+	*/
+	if len(pairs) != int(math.Round(float64(len(users)/2)+0.5)) {
+		var unpairedUsers []store.User
+
+		for i := range users {
+			if !pairedUsers[i] {
+				unpairedUsers = append(unpairedUsers, users[i])
+			}
+		}
+
+		for i := 0; i < len(unpairedUsers); i += 2 {
+
+			if i+1 < len(unpairedUsers) {
+				pairs = append(pairs, []store.User{unpairedUsers[i], unpairedUsers[i+1]})
 			} else {
-				// Handle odd number of users
-				// update single user in database
-				pairs = append(pairs, []store.User{users[i]})
+				pairs = append(pairs, []store.User{unpairedUsers[i]})
 			}
 		}
 	}
 
 	return pairs
-}
-
-func findCommonSkill(skillsA, skillsB []string) string {
-	for _, skillA := range skillsA {
-		for _, skillB := range skillsB {
-			if skillA == skillB {
-				return skillA
-			}
-		}
-	}
-	return ""
-}
-
-func findCommonParent(skillsA, skillsB []string) string {
-	for _, skillA := range skillsA {
-		for _, skillB := range skillsB {
-			parentA := findParentCategory(skillA)
-			parentB := findParentCategory(skillB)
-			if parentA != "" && parentA == parentB {
-				return parentA
-			}
-		}
-	}
-	return ""
-}
-
-func findParentCategory(skill string) string {
-	for parent, skills := range utils.SkillDomains {
-		for _, s := range skills {
-			if s == skill {
-				return parent
-			}
-		}
-	}
-	return ""
-}
-
-func CreateFocusRooms() {
-	// google calender api?
-	// dyte community access?
 }

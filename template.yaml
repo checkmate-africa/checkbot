@@ -56,3 +56,17 @@ Resources:
       Runtime: go1.x
       Architectures:
         - x86_64
+  ShufflerFunction:
+    Type: "AWS::Serverless::Function"
+    Properties:
+      CodeUri: lambda/shuffler
+      Handler: shuffler
+      Runtime: go1.x
+      Events:
+        CWSchedule:
+          Type: ScheduleV2
+          Properties:
+            ScheduleExpression: "cron(0 1 * * 0)"
+            ScheduleExpressionTimezone: GMT
+            Name: AccountabilityShuffleSchedule
+            Description: generates new accountability pairs every week

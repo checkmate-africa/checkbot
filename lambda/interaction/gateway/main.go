@@ -44,7 +44,7 @@ func handler(req events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse
 	svc := services.NewLambdaService()
 	go svc.Invoke(input)
 
-	return utils.ApiResponse(http.StatusOK, "Success")
+	return utils.ApiResponse(http.StatusOK, "success")
 }
 
 func main() {

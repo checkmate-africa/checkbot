@@ -9,11 +9,34 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 )
 
-func GetUsers() {
+func GetUsers() *[]User {
+	users := []User{}
 
+	result, err := DB.Scan(&dynamodb.ScanInput{
+		TableName: aws.String(UsersTable),
+	})
+
+	if err != nil {
+		log.Println(err)
+		return nil
+	}
+
+	for _, item := range result.Items {
+		user := User{}
+
+		if err = dynamodbattribute.UnmarshalMap(item, &user); err != nil {
+			log.Println(err)
+		} else {
+			users = append(users, user)
+		}
+	}
+
+	return &users
 }
 
 func GetUser(email string) *User {
+	user := User{}
+
 	result, err := DB.GetItem(&dynamodb.GetItemInput{
 		TableName: aws.String(UsersTable),
 		Key: map[string]*dynamodb.AttributeValue{
@@ -25,6 +48,7 @@ func GetUser(email string) *User {
 
 	if err != nil {
 		log.Println(err)
+		return nil
 	}
 
 	if result.Item == nil {
@@ -33,8 +57,6 @@ func GetUser(email string) *User {
 
 		return nil
 	}
-
-	user := User{}
 
 	if err = dynamodbattribute.UnmarshalMap(result.Item, &user); err != nil {
 		log.Println(err)

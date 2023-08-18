@@ -1,7 +1,6 @@
 package store
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -9,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 )
 
-func GetUsers() *[]User {
+func GetUsers() (*[]User, error) {
 	users := []User{}
 
 	result, err := DB.Scan(&dynamodb.ScanInput{
@@ -18,7 +17,7 @@ func GetUsers() *[]User {
 
 	if err != nil {
 		log.Println(err)
-		return nil
+		return nil, err
 	}
 
 	for _, item := range result.Items {
@@ -31,10 +30,10 @@ func GetUsers() *[]User {
 		}
 	}
 
-	return &users
+	return &users, nil
 }
 
-func GetUser(email string) *User {
+func GetUser(email string) (*User, error) {
 	user := User{}
 
 	result, err := DB.GetItem(&dynamodb.GetItemInput{
@@ -48,29 +47,29 @@ func GetUser(email string) *User {
 
 	if err != nil {
 		log.Println(err)
-		return nil
+		return nil, err
 	}
 
 	if result.Item == nil {
 		msg := "could not user with email " + email
 		log.Println(msg)
 
-		return nil
+		return nil, err
 	}
 
 	if err = dynamodbattribute.UnmarshalMap(result.Item, &user); err != nil {
 		log.Println(err)
 	}
 
-	return &user
+	return &user, nil
 }
 
-func SaveUserData(u User) {
+func SaveUserData(u User) error {
 	user, err := dynamodbattribute.MarshalMap(u)
 
 	if err != nil {
 		log.Println(err)
-		return
+		return err
 	}
 
 	input := &dynamodb.PutItemInput{
@@ -82,8 +81,8 @@ func SaveUserData(u User) {
 
 	if err != nil {
 		log.Println(err)
-		return
+		return err
 	}
 
-	fmt.Println(user)
+	return nil
 }

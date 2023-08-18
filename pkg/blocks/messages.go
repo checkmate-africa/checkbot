@@ -46,6 +46,45 @@ func SignupSuccessMessage(userId string) slack.MsgOption {
 	)
 }
 
-func GeneralPairsNotificationMessage(pairs [][]store.User, p slack.InteractionCallback) {
+func PairShuffleAnnouncementMessage(pairs store.Pairs) slack.MsgOption {
+	introText := "Unveiling This Week's Dynamic Duos! :tada: \n\nHi checkers! Your favourite bot is here again with the weekly shuffle and I am pleased to announce that I have evaluated your skills and matched you with new accountability partners as I deem fit (yeah, I make the decisions around here). \n\n Say goodbye to old buddies and prepare to collaborate, learn, share knowledge and stay productive with someone new. \n\n \n"
+	closingText := "\n\n \nRemember to be awesome, respectful and not violate our community guidelines because we'll kick you out if you do (hehe not kidding), Have an amazing week ahead! :rocket:"
 
+	introParagraph := slack.NewTextBlockObject("mrkdwn", introText, false, false)
+	introBlock := slack.NewSectionBlock(introParagraph, nil, nil)
+
+	var pairListText string
+
+	for _, pair := range pairs {
+		var text string
+
+		if len(pair) > 1 {
+			text = ":handshake: <@" + pair[0].SlackId + "> & <@" + pair[1].SlackId + "> \n"
+		} else {
+			text = "\n\n:ninja: <@" + pair[0].SlackId + "> is the lone wolf for the week. \n"
+		}
+
+		pairListText = pairListText + text
+	}
+
+	pairListParagraph := slack.NewTextBlockObject("mrkdwn", pairListText, false, false)
+	pairListBlock := slack.NewSectionBlock(pairListParagraph, nil, nil)
+
+	closingParagraph := slack.NewTextBlockObject("mrkdwn", closingText, false, false)
+	closingBlock := slack.NewSectionBlock(closingParagraph, nil, nil)
+
+	return slack.MsgOptionBlocks(
+		introBlock,
+		pairListBlock,
+		closingBlock,
+	)
+}
+
+func PairNotificationMessage(user store.PairedUser) slack.MsgOption {
+	text := "Hi there :wave: \n\n Your new accountability partner for this week is <@" + user.Partner.SlackId + ">. \n\n You can navigate to the home tab to view more details about them. Remember to be respectful and adhere to our community guidelines. Have a productive week ahead!"
+
+	paragraph := slack.NewTextBlockObject("mrkdwn", text, false, false)
+	block := slack.NewSectionBlock(paragraph, nil, nil)
+
+	return slack.MsgOptionBlocks(block)
 }

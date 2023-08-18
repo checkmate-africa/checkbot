@@ -1,8 +1,6 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
 	"log"
 	"math/rand"
 	"time"
@@ -14,8 +12,15 @@ import (
 )
 
 func handler() error {
-	users := *store.GetUsers()
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	u, err := store.GetUsers()
+
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	users := *u
 
 	for i := range users {
 		newPosition := r.Intn(len(users) - 1)
@@ -23,12 +28,14 @@ func handler() error {
 	}
 
 	pairs := bot.GeneratePairs(users)
+	pairedUsers := store.SavePairs(pairs)
 
-	for _, pair := range pairs {
-		marshaled, _ := json.MarshalIndent(pair, "", "   ")
-		fmt.Println(string(marshaled))
-		fmt.Println(" ")
+	if err = bot.SendNewPairShuffleAnnouncement(pairs); err != nil {
+		log.Println(err)
+		return err
 	}
+
+	bot.SendPairShuffleNotification(pairedUsers)
 
 	return nil
 }

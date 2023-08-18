@@ -9,7 +9,10 @@ type User struct {
 	SlackId         string
 }
 
-type Pair struct {
+type Pairs [][]User
+
+type PairedUser struct {
 	Email   string
+	SlackId string
 	Partner User
 }

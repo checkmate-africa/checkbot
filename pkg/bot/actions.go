@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"strings"
+	"sync"
 
 	"github.com/checkmateafrica/accountability-bot/pkg/blocks"
 	"github.com/checkmateafrica/accountability-bot/pkg/store"
@@ -12,7 +13,7 @@ import (
 	"github.com/slack-go/slack/slackevents"
 )
 
-var api = slack.New("xoxb-1465680528901-5671214476405-XpVXLaeSEoqdKCKPjZEDOpMH")
+var api = slack.New("xoxb-1465680528901-5671214476405-QEgTxlpItfGHrnJii5wIpoDw")
 
 func VerifyUrl(body string) *slackevents.ChallengeResponse {
 	var res *slackevents.ChallengeResponse
@@ -59,7 +60,7 @@ func ShowBackgroundDataModal(p slack.InteractionCallback) {
 		if err != nil {
 			log.Println(err)
 		} else {
-			user = store.GetUser(profile.Email)
+			user, _ = store.GetUser(profile.Email)
 		}
 	}
 
@@ -161,11 +162,41 @@ func PublishAppHome(body string) {
 		return
 	}
 
-	partner := store.GetPartner(profile.Email)
+	partner, _ := store.GetPartner(profile.Email)
 	view := blocks.AppHomeContent(partner)
 
 	if _, err = api.PublishView(user.UserID, view, ""); err != nil {
 		log.Println(err)
 		return
 	}
+}
+
+func SendNewPairShuffleAnnouncement(pairs store.Pairs) error {
+	message := blocks.PairShuffleAnnouncementMessage(pairs)
+
+	if _, _, err := api.PostMessage(utils.ChannelIdAnnouncements, message, slack.MsgOptionAsUser(slack.DEFAULT_MESSAGE_ASUSER)); err != nil {
+		log.Println(err)
+		return err
+	}
+
+	return nil
+}
+
+func SendPairShuffleNotification(pairedUsers []store.PairedUser) {
+	var wg sync.WaitGroup
+
+	for _, user := range pairedUsers {
+		wg.Add(1)
+
+		go func(u store.PairedUser) {
+			defer wg.Done()
+			message := blocks.PairNotificationMessage(u)
+
+			if _, _, err := api.PostMessage(u.SlackId, message, slack.MsgOptionAsUser(slack.DEFAULT_MESSAGE_ASUSER)); err != nil {
+				log.Println(err)
+			}
+		}(user)
+	}
+
+	wg.Wait()
 }

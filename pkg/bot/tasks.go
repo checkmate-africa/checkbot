@@ -8,7 +8,7 @@ import (
 )
 
 func GeneratePairs(users []store.User) [][]store.User {
-	var pairs [][]store.User
+	var pairs store.Pairs
 	var pairedUsers = make(map[int]bool)
 
 	/* create pairs of users with

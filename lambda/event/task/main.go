@@ -18,8 +18,8 @@ func handler(req utils.InvokeRequestPayload) error {
 
 	switch innerEvent.(type) {
 	case *slackevents.PinAddedEvent:
-		bot.InviteToSignup(req.Body)
 		bot.PublishAppHome(req.Body)
+		bot.InviteToSignup(req.Body)
 	case *slackevents.ReactionAddedEvent:
 		bot.DeleteMessageByReaction(req.Body)
 	default:

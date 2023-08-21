@@ -2,6 +2,8 @@ package utils
 
 const (
 	MetedataSeperator         = "__"
+	AwsRegion                 = "AWS_REGION"
+	SlackToken                = "SLACK_BOT_TOKEN"
 	ActionIdOpenModal         = "actionId-openModal"
 	BlockIdSignupButton       = "blockId-signupBtn"
 	BlockIdSettingsButton     = "blockId-settingsBtn"

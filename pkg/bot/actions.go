@@ -3,6 +3,7 @@ package bot
 import (
 	"encoding/json"
 	"log"
+	"os"
 	"strings"
 	"sync"
 
@@ -13,7 +14,7 @@ import (
 	"github.com/slack-go/slack/slackevents"
 )
 
-var api = slack.New("xoxb-1465680528901-5671214476405-QEgTxlpItfGHrnJii5wIpoDw")
+var api = slack.New(os.Getenv(utils.SlackToken))
 
 func VerifyUrl(body string) *slackevents.ChallengeResponse {
 	var res *slackevents.ChallengeResponse

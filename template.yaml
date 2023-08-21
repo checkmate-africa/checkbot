@@ -5,11 +5,25 @@ Description: >
 
   Checkmate accountability bot SAM
 
+Parameters:
+  AWS_REGION:
+    Type: String
+    Description: Aws service region
+    Default: local
+  SLACK_BOT_TOKEN:
+    Type: String
+    Description: Slack bot token
+    Default: token
+
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
     Timeout: 10
     MemorySize: 128
+    Environment:
+      Variables:
+        AWS_REGION: !Ref AWS_REGION
+        SLACK_BOT_TOKEN: !Ref SLACK_BOT_TOKEN
 
 Resources:
   EventGatewayFunction:
@@ -70,3 +84,31 @@ Resources:
             ScheduleExpressionTimezone: GMT
             Name: AccountabilityShuffleSchedule
             Description: generates new accountability pairs every week
+  UsersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: checkmateafrica-users
+      AttributeDefinitions:
+        - AttributeName: Email
+          AttributeType: S
+      KeySchema:
+        - AttributeName: Email
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+  PairsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: checkmateafrica-pairs
+      AttributeDefinitions:
+        - AttributeName: Email
+          AttributeType: S
+      KeySchema:
+        - AttributeName: Email
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5

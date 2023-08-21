@@ -2,18 +2,18 @@ package services
 
 import (
 	"log"
+	"os"
 
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/lambda"
+	"github.com/checkmateafrica/accountability-bot/pkg/utils"
 )
 
 func NewLambdaService() *lambda.Lambda {
 	awsSess, err := session.NewSession(&aws.Config{
-		Region:      aws.String("local"),
-		Endpoint:    aws.String("http://host.docker.internal:3001"),
-		Credentials: credentials.NewStaticCredentials("x", "x", "xxxxx"),
+		Endpoint: aws.String("http://host.docker.internal:3001"),
+		Region:   aws.String(os.Getenv(utils.AwsRegion)),
 	})
 
 	if err != nil {

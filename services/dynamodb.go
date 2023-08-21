@@ -11,10 +11,15 @@ import (
 )
 
 func NewDynaClient() *dynamodb.DynamoDB {
-	awsSess, err := session.NewSession(&aws.Config{
-		Endpoint: aws.String("http://host.docker.internal:8000"),
-		Region:   aws.String(os.Getenv(utils.AwsRegion)),
-	})
+	config := &aws.Config{
+		Region: aws.String(os.Getenv(utils.EnvAwsRegion)),
+	}
+
+	if os.Getenv(utils.EnvSamLocal) == "true" {
+		config.Endpoint = aws.String("http://host.docker.internal:8000")
+	}
+
+	awsSess, err := session.NewSession(config)
 
 	if err != nil {
 		log.Println(err)

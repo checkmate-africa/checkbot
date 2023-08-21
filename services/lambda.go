@@ -11,10 +11,15 @@ import (
 )
 
 func NewLambdaService() *lambda.Lambda {
-	awsSess, err := session.NewSession(&aws.Config{
-		Endpoint: aws.String("http://host.docker.internal:3001"),
-		Region:   aws.String(os.Getenv(utils.AwsRegion)),
-	})
+	config := &aws.Config{
+		Region: aws.String(os.Getenv(utils.EnvAwsRegion)),
+	}
+
+	if os.Getenv(utils.EnvSamLocal) == "true" {
+		config.Endpoint = aws.String("http://host.docker.internal:3001")
+	}
+
+	awsSess, err := session.NewSession(config)
 
 	if err != nil {
 		log.Println(err)

@@ -14,7 +14,7 @@ import (
 	"github.com/slack-go/slack/slackevents"
 )
 
-var api = slack.New(os.Getenv(utils.SlackToken))
+var api = slack.New(os.Getenv(utils.EnvSlackToken))
 
 func VerifyUrl(body string) *slackevents.ChallengeResponse {
 	var res *slackevents.ChallengeResponse

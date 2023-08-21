@@ -78,12 +78,11 @@ Resources:
       Runtime: go1.x
       Events:
         CWSchedule:
-          Type: ScheduleV2
+          Type: Schedule
           Properties:
-            ScheduleExpression: "cron(0 1 * * 0)"
-            ScheduleExpressionTimezone: GMT
+            Schedule: "cron(0 1 * * 0)"
             Name: AccountabilityShuffleSchedule
-            Description: generates new accountability pairs every week
+            Description: cron to run the shuffler function weekly
   UsersTable:
     Type: AWS::DynamoDB::Table
     Properties:

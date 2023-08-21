@@ -17,7 +17,7 @@ func handler(req utils.InvokeRequestPayload) error {
 	innerEvent := eventsAPIEvent.InnerEvent.Data
 
 	switch innerEvent.(type) {
-	case *slackevents.PinAddedEvent:
+	case *slackevents.TeamJoinEvent:
 		bot.PublishAppHome(req.Body)
 		bot.InviteToSignup(req.Body)
 	case *slackevents.ReactionAddedEvent:

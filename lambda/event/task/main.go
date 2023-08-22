@@ -18,8 +18,15 @@ func handler(req utils.InvokeRequestPayload) error {
 
 	switch innerEvent.(type) {
 	case *slackevents.TeamJoinEvent:
-		bot.PublishAppHome(req.Body)
-		bot.InviteToSignup(req.Body)
+		var data bot.SlackJoinEventData
+
+		if err := json.Unmarshal([]byte(req.Body), &data); err != nil {
+			log.Println(err)
+			return err
+		}
+
+		bot.PublishAppHome(data.User.Id)
+		bot.InviteToSignup(data.User.Id)
 	case *slackevents.ReactionAddedEvent:
 		bot.DeleteMessageByReaction(req.Body)
 	default:

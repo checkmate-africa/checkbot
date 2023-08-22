@@ -1,15 +1,27 @@
 package bot
 
-type EventItem struct {
+type ReactionEventItem struct {
 	Ts string `json:"ts"`
 }
 
-type SlackEvent struct {
-	Reaction string    `json:"reaction"`
-	User     string    `json:"user"`
-	Item     EventItem `json:"item"`
+type SlackReactionEvent struct {
+	Reaction string            `json:"reaction"`
+	User     string            `json:"user"`
+	Item     ReactionEventItem `json:"item"`
 }
 
-type SlackEventData struct {
-	SlackEvent `json:"event"`
+type SlackReactionEventData struct {
+	SlackReactionEvent `json:"event"`
+}
+
+type JoinEventUser struct {
+	Id string `json:"id"`
+}
+
+type SlackJoinEvent struct {
+	User JoinEventUser `json:"user"`
+}
+
+type SlackJoinEventData struct {
+	SlackJoinEvent `json:"event"`
 }

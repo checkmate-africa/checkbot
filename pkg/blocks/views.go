@@ -77,18 +77,26 @@ func BackgroundDataModal(p slack.InteractionCallback, user *store.User) slack.Mo
 	return modalRequest
 }
 
-func AppHomeContent(partner *store.User) slack.HomeTabViewRequest {
+func AppHomeContent(partner *store.User, user *store.User) slack.HomeTabViewRequest {
 	var blocks slack.Blocks
+	var subtitleText string
+	var headerCta *slack.Accessory
 
-	headerCtaButtonText := slack.NewTextBlockObject("plain_text", "Settings", false, false)
-	headerCtaElement := slack.NewButtonBlockElement(utils.ActionIdOpenModal, "", headerCtaButtonText)
-	headerCta := slack.NewAccessory(headerCtaElement)
+	if user == nil {
+		subtitleText = "You haven't signed up yet, please check the messages tab."
+	} else {
+		subtitleText = "No partner until next week."
+
+		headerCtaButtonText := slack.NewTextBlockObject("plain_text", "Settings", false, false)
+		headerCtaElement := slack.NewButtonBlockElement(utils.ActionIdOpenModal, "", headerCtaButtonText)
+		headerCta = slack.NewAccessory(headerCtaElement)
+	}
 
 	headerArgs := slack.SectionBlockOptionBlockID(utils.BlockIdSettingsButton)
 	divider := slack.NewDividerBlock()
 
 	if partner == nil {
-		headerText := slack.NewTextBlockObject("mrkdwn", "*Accountability* \nNo partner until next week.", false, false)
+		headerText := slack.NewTextBlockObject("mrkdwn", "*Accountability* \n"+subtitleText, false, false)
 		header := slack.NewSectionBlock(headerText, nil, headerCta, headerArgs)
 
 		blocks = slack.Blocks{

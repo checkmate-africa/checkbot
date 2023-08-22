@@ -26,22 +26,10 @@ func VerifyUrl(body string) *slackevents.ChallengeResponse {
 	return res
 }
 
-func InviteToSignup(body string) {
-	var data SlackEventData
+func InviteToSignup(userId string) {
+	message := blocks.SignupInviteMessage(userId)
 
-	if err := json.Unmarshal([]byte(body), &data); err != nil {
-		log.Println(err)
-		return
-	}
-
-	user := slack.GetUserProfileParameters{
-		UserID:        data.User,
-		IncludeLabels: false,
-	}
-
-	message := blocks.SignupInviteMessage(user.UserID)
-
-	if _, _, err := api.PostMessage(data.User, message); err != nil {
+	if _, _, err := api.PostMessage(userId, message); err != nil {
 		log.Println(err)
 		return
 	}
@@ -73,7 +61,7 @@ func ShowBackgroundDataModal(p slack.InteractionCallback) {
 	}
 }
 
-func SaveBackgroundData(p slack.InteractionCallback, successMessage bool) {
+func SaveBackgroundData(p slack.InteractionCallback, newUser bool) {
 	values := p.View.State.Values
 	form := blocks.SignUpform
 
@@ -109,13 +97,29 @@ func SaveBackgroundData(p slack.InteractionCallback, successMessage bool) {
 		SlackId:         user.UserID,
 	}
 
-	if successMessage {
-		originMsgParams := strings.Split(p.View.PrivateMetadata, utils.MetedataSeperator)
-		api.DeleteMessage(originMsgParams[0], originMsgParams[1])
-		SendSignupSuccessMessage(user.UserID, p)
-	}
-
 	store.SaveUserData(userData)
+
+	if newUser {
+		originMsgParams := strings.Split(p.View.PrivateMetadata, utils.MetedataSeperator)
+		if _, _, err := api.DeleteMessage(originMsgParams[0], originMsgParams[1]); err != nil {
+			log.Println(err)
+		}
+
+		var wg sync.WaitGroup
+		wg.Add(2)
+
+		go func() {
+			defer wg.Done()
+			SendSignupSuccessMessage(user.UserID, p)
+		}()
+
+		go func() {
+			defer wg.Done()
+			PublishAppHome(user.UserID)
+		}()
+
+		wg.Wait()
+	}
 }
 
 func SendSignupSuccessMessage(userId string, p slack.InteractionCallback) {
@@ -128,7 +132,7 @@ func SendSignupSuccessMessage(userId string, p slack.InteractionCallback) {
 }
 
 func DeleteMessageByReaction(body string) {
-	var data SlackEventData
+	var data SlackReactionEventData
 
 	if err := json.Unmarshal([]byte(body), &data); err != nil {
 		log.Println(err)
@@ -143,30 +147,24 @@ func DeleteMessageByReaction(body string) {
 	}
 }
 
-func PublishAppHome(body string) {
-	var data SlackEventData
-
-	if err := json.Unmarshal([]byte(body), &data); err != nil {
-		log.Println(err)
-		return
-	}
-
-	user := slack.GetUserProfileParameters{
-		UserID:        data.User,
+func PublishAppHome(userId string) {
+	params := slack.GetUserProfileParameters{
+		UserID:        userId,
 		IncludeLabels: false,
 	}
 
-	profile, err := api.GetUserProfile(&user)
+	profile, err := api.GetUserProfile(&params)
 
 	if err != nil {
 		log.Println(err)
 		return
 	}
 
+	user, _ := store.GetUser(profile.Email)
 	partner, _ := store.GetPartner(profile.Email)
-	view := blocks.AppHomeContent(partner)
+	view := blocks.AppHomeContent(partner, user)
 
-	if _, err = api.PublishView(user.UserID, view, ""); err != nil {
+	if _, err = api.PublishView(params.UserID, view, ""); err != nil {
 		log.Println(err)
 		return
 	}

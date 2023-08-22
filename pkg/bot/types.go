@@ -1,27 +1,15 @@
 package bot
 
-type ReactionEventItem struct {
-	Ts string `json:"ts"`
+import "github.com/slack-go/slack/slackevents"
+
+type ReactionAddedEventData struct {
+	slackevents.ReactionAddedEvent `json:"event"`
 }
 
-type SlackReactionEvent struct {
-	Reaction string            `json:"reaction"`
-	User     string            `json:"user"`
-	Item     ReactionEventItem `json:"item"`
+type TeamJoinEventData struct {
+	slackevents.TeamJoinEvent `json:"event"`
 }
 
-type SlackReactionEventData struct {
-	SlackReactionEvent `json:"event"`
-}
-
-type JoinEventUser struct {
-	Id string `json:"id"`
-}
-
-type SlackJoinEvent struct {
-	User JoinEventUser `json:"user"`
-}
-
-type SlackJoinEventData struct {
-	SlackJoinEvent `json:"event"`
+type ChannelJoinEventData struct {
+	slackevents.MemberJoinedChannelEvent `json:"event"`
 }

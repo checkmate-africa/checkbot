@@ -132,7 +132,7 @@ func SendSignupSuccessMessage(userId string, p slack.InteractionCallback) {
 }
 
 func DeleteMessageByReaction(body string) {
-	var data SlackReactionEventData
+	var data ReactionAddedEventData
 
 	if err := json.Unmarshal([]byte(body), &data); err != nil {
 		log.Println(err)
@@ -140,7 +140,7 @@ func DeleteMessageByReaction(body string) {
 	}
 
 	if data.Reaction == "x" {
-		if _, _, err := api.DeleteMessage(data.User, data.Item.Ts); err != nil {
+		if _, _, err := api.DeleteMessage(data.User, data.Item.Timestamp); err != nil {
 			log.Println(err)
 			return
 		}

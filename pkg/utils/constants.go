@@ -10,6 +10,7 @@ const (
 	BlockIdSettingsButton     = "blockId-settingsBtn"
 	TeamID                    = "T01DPL0FJSH"
 	ChannelIdAnnouncements    = "C01DC0UHZST"
+	ChannelIdManualSignup     = "C05P2T77QSY"
 	ChannelIntroductions      = "<#C01EGJ730DN>"
 	ChannelDesign             = "<#C05LPDMJVV0>"
 	ChannelEngineering        = "<#C05M2307FA5>"

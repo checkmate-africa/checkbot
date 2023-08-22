@@ -24,7 +24,7 @@ func handler(req events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse
 
 	if err := json.Unmarshal([]byte(decoded["payload"][0]), &interactionPayload); err != nil {
 		log.Println(err)
-		return utils.ApiResponse(http.StatusBadRequest, "")
+		return utils.ApiResponse(http.StatusBadRequest, nil)
 	}
 
 	invokePayload, err := json.Marshal(utils.InvokeRequestPayload{
@@ -45,7 +45,7 @@ func handler(req events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse
 	svc := services.NewLambdaService()
 	go svc.Invoke(input)
 
-	return utils.ApiResponse(http.StatusOK, "success")
+	return utils.ApiResponse(http.StatusOK, nil)
 }
 
 func main() {

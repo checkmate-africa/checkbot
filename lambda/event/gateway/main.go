@@ -26,7 +26,7 @@ func handler(req events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse
 
 	if eventsAPIEvent.Type == slackevents.URLVerification {
 		res := bot.VerifyUrl(body)
-		return utils.ApiResponse(http.StatusOK, res.Challenge)
+		return utils.ApiResponse(http.StatusOK, &res.Challenge)
 	}
 
 	if eventsAPIEvent.Type == slackevents.CallbackEvent {
@@ -50,7 +50,7 @@ func handler(req events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse
 		go svc.Invoke(input)
 	}
 
-	return utils.ApiResponse(http.StatusOK, "success")
+	return utils.ApiResponse(http.StatusOK, nil)
 }
 
 func main() {

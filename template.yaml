@@ -29,6 +29,7 @@ Resources:
   EventGatewayFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
+      FunctionName: checkmate-EventGatewayFunction
       CodeUri: lambda/event/gateway
       Handler: event-gateway
       Runtime: go1.x
@@ -43,6 +44,7 @@ Resources:
   EventTaskFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
+      FunctionName: checkmate-EventTaskFunction
       CodeUri: lambda/event/task
       Handler: event-task
       Runtime: go1.x
@@ -51,6 +53,7 @@ Resources:
   InteractionGatewayFunction:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: checkmate-InteractionGatewayFunction
       CodeUri: lambda/interaction/gateway
       Handler: interaction-gateway
       Runtime: go1.x
@@ -65,6 +68,7 @@ Resources:
   InteractionTaskFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
+      FunctionName: checkmate-InteractionTaskFunction
       CodeUri: lambda/interaction/task
       Handler: interaction-task
       Runtime: go1.x
@@ -73,6 +77,7 @@ Resources:
   ShufflerFunction:
     Type: "AWS::Serverless::Function"
     Properties:
+      FunctionName: checkmate-ShufflerFunction
       CodeUri: lambda/shuffler
       Handler: shuffler
       Runtime: go1.x

@@ -37,7 +37,7 @@ func handler(req events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse
 	}
 
 	input := &lambda.InvokeInput{
-		FunctionName:   aws.String("InteractionTaskFunction"),
+		FunctionName:   aws.String(utils.LambdaInteractionTaskFunction),
 		InvocationType: aws.String("RequestResponse"),
 		Payload:        invokePayload,
 	}

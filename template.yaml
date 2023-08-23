@@ -80,7 +80,7 @@ Resources:
         CWSchedule:
           Type: Schedule
           Properties:
-            Schedule: "cron(0 6 * * SUN *)"
+            Schedule: "cron(0 6 ? * SUN *)"
             Name: AccountabilityShuffleSchedule
             Description: cron to run the shuffler function weekly
   UsersTable:

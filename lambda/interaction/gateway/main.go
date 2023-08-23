@@ -38,12 +38,16 @@ func handler(req events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse
 
 	input := &lambda.InvokeInput{
 		FunctionName:   aws.String(utils.LambdaInteractionTaskFunction),
-		InvocationType: aws.String("RequestResponse"),
+		InvocationType: aws.String("Event"),
 		Payload:        invokePayload,
 	}
 
 	svc := services.NewLambdaService()
-	go svc.Invoke(input)
+
+	if _, err = svc.Invoke(input); err != nil {
+		log.Println(err)
+		return utils.ApiResponse(http.StatusInternalServerError, nil)
+	}
 
 	return utils.ApiResponse(http.StatusOK, nil)
 }

@@ -15,7 +15,6 @@ Parameters:
     Description: Slack bot token
     Default: token
 
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
     Timeout: 20
@@ -27,7 +26,7 @@ Globals:
 
 Resources:
   EventGatewayFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function
     Properties:
       FunctionName: checkmate-EventGatewayFunction
       CodeUri: lambda/event/gateway
@@ -37,12 +36,12 @@ Resources:
         - x86_64
       Events:
         CatchAll:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Type: Api
           Properties:
             Path: /events
             Method: POST
   EventTaskFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function
     Properties:
       FunctionName: checkmate-EventTaskFunction
       CodeUri: lambda/event/task
@@ -61,12 +60,12 @@ Resources:
         - x86_64
       Events:
         CatchAll:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Type: Api
           Properties:
             Path: /interactions
             Method: POST
   InteractionTaskFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function
     Properties:
       FunctionName: checkmate-InteractionTaskFunction
       CodeUri: lambda/interaction/task

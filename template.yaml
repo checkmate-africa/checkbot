@@ -6,11 +6,11 @@ Description: >
   Checkmate accountability bot SAM
 
 Parameters:
-  AWS_REGION:
+  AwsRegion:
     Type: String
     Description: Aws service region
     Default: local
-  SLACK_BOT_TOKEN:
+  SlackBotToken:
     Type: String
     Description: Slack bot token
     Default: token
@@ -22,8 +22,8 @@ Globals:
     MemorySize: 128
     Environment:
       Variables:
-        AWS_REGION: !Ref AWS_REGION
-        SLACK_BOT_TOKEN: !Ref SLACK_BOT_TOKEN
+        AwsRegion: !Ref AwsRegion
+        SlackBotToken: !Ref SlackBotToken
 
 Resources:
   EventGatewayFunction:

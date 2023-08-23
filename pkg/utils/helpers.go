@@ -1,9 +1,14 @@
 package utils
 
 import (
+	"os"
 	"strconv"
 	"time"
 )
+
+func IsLocalEnv() bool {
+	return os.Getenv(EnvSamLocal) == "true"
+}
 
 func GetNextDayOfWeek(dayOfWeek int) (day string, month string, year string, daysUntil string) {
 	var (

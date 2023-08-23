@@ -15,7 +15,7 @@ func NewLambdaService() *lambda.Lambda {
 		Region: aws.String(os.Getenv(utils.EnvAwsRegion)),
 	}
 
-	if os.Getenv(utils.EnvSamLocal) == "true" {
+	if utils.IsLocalEnv() {
 		config.Endpoint = aws.String("http://host.docker.internal:3001")
 	}
 

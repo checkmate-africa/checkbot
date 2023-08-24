@@ -5,11 +5,13 @@ on:
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
+    env:
+      GOFLAGS: "-ldflags=-buildvcs=false"
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
         with:
-          go-version: 1.20
+          go-version: "1.20"
       - uses: aws-actions/setup-sam@v2
         with:
           use-installer: true

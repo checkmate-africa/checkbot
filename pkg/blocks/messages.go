@@ -8,7 +8,7 @@ import (
 
 func SignupInviteMessage(userId string) slack.MsgOption {
 	textContent :=
-		"Hola <@" + userId + ">! :tada: \n\nWelcome to checkmate, we are thrilled to have you here in our community, whether you're a pro, a curious learner, or somewhere in between, you're in the right place. Our primary goal here is to stay productive, skill up, connect and collaborate with peers. \n\nLet's get you signed up for accountability pairings."
+		"Hola <@" + userId + ">! :tada: \n\nWelcome to checkmate, we are thrilled to have you here in our community. Our primary goal here is to stay productive, skill up, connect and collaborate with peers. \n\nLet's get you signed up for accountability pairings."
 
 	paragraphs := slack.NewTextBlockObject("mrkdwn", textContent, false, false)
 	textBlock := slack.NewSectionBlock(paragraphs, nil, nil)

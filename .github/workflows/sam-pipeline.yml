@@ -5,8 +5,6 @@ on:
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
-    env:
-      GOFLAGS: "-ldflags=-buildvcs=false"
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -21,9 +19,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
       # sam build
-      - run: |
-          chmod +x build.sh
-          ./build.sh
+      - run: sam build --no-cached --use-container
       # sam deploy
       - run: |
           sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --region ${{ secrets.AWS_REGION }} --parameter-overrides AwsRegion=${{ secrets.AWS_REGION }} SlackBotToken=${{ secrets.SLACK_BOT_TOKEN }}

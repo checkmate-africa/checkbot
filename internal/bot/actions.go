@@ -7,9 +7,9 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/checkmateafrica/accountability-bot/pkg/blocks"
-	"github.com/checkmateafrica/accountability-bot/pkg/store"
-	"github.com/checkmateafrica/accountability-bot/pkg/utils"
+	"github.com/checkmateafrica/accountability-bot/internal/blocks"
+	"github.com/checkmateafrica/accountability-bot/internal/store"
+	"github.com/checkmateafrica/accountability-bot/internal/utils"
 	"github.com/slack-go/slack"
 	"github.com/slack-go/slack/slackevents"
 )

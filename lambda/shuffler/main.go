@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/checkmateafrica/accountability-bot/pkg/bot"
-	"github.com/checkmateafrica/accountability-bot/pkg/store"
+	"github.com/checkmateafrica/accountability-bot/internal/bot"
+	"github.com/checkmateafrica/accountability-bot/internal/store"
 	"github.com/checkmateafrica/accountability-bot/services"
 )
 

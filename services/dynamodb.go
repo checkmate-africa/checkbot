@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
-	"github.com/checkmateafrica/accountability-bot/pkg/utils"
+	"github.com/checkmateafrica/accountability-bot/internal/utils"
 )
 
 func NewDynaClient() *dynamodb.DynamoDB {

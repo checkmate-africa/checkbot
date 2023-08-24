@@ -10,7 +10,7 @@ import (
 	lambdaruntime "github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/lambda"
-	"github.com/checkmateafrica/accountability-bot/pkg/utils"
+	"github.com/checkmateafrica/accountability-bot/internal/utils"
 	"github.com/checkmateafrica/accountability-bot/services"
 	"github.com/gorilla/schema"
 	"github.com/slack-go/slack"

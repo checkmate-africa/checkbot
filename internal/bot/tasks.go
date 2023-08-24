@@ -3,8 +3,8 @@ package bot
 import (
 	"math"
 
-	"github.com/checkmateafrica/accountability-bot/pkg/store"
-	"github.com/checkmateafrica/accountability-bot/pkg/utils"
+	"github.com/checkmateafrica/accountability-bot/internal/store"
+	"github.com/checkmateafrica/accountability-bot/internal/utils"
 )
 
 func GeneratePairs(users []store.User) [][]store.User {

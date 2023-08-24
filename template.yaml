@@ -27,10 +27,12 @@ Globals:
 Resources:
   EventGatewayFunction:
     Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: makefile
     Properties:
       FunctionName: checkmate-EventGatewayFunction
       CodeUri: .
-      Handler: lambda/event/gateway
+      Handler: event-gateway
       Runtime: go1.x
       Architectures:
         - x86_64
@@ -42,19 +44,23 @@ Resources:
             Method: POST
   EventTaskFunction:
     Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: makefile
     Properties:
       FunctionName: checkmate-EventTaskFunction
       CodeUri: .
-      Handler: lambda/event/task
+      Handler: event-task
       Runtime: go1.x
       Architectures:
         - x86_64
   InteractionGatewayFunction:
     Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: makefile
     Properties:
       FunctionName: checkmate-InteractionGatewayFunction
       CodeUri: .
-      Handler: lambda/interaction/gateway
+      Handler: interaction-gateway
       Runtime: go1.x
       Architectures:
         - x86_64
@@ -66,19 +72,23 @@ Resources:
             Method: POST
   InteractionTaskFunction:
     Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: makefile
     Properties:
       FunctionName: checkmate-InteractionTaskFunction
       CodeUri: .
-      Handler: lambda/interaction/task
+      Handler: interaction-task
       Runtime: go1.x
       Architectures:
         - x86_64
   ShufflerFunction:
     Type: "AWS::Serverless::Function"
+    Metadata:
+      BuildMethod: makefile
     Properties:
       FunctionName: checkmate-ShufflerFunction
       CodeUri: .
-      Handler: lambda/shuffler
+      Handler: shuffler
       Runtime: go1.x
       Events:
         CWSchedule:

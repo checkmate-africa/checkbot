@@ -6,11 +6,10 @@ jobs:
   build-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-go@v4
+      - uses: actions/checkout@v3
+      - uses: aws-actions/setup-sam@v2
         with:
-          go-version: "1.20.6"
-      - uses: aws-actions/setup-sam@v1
+          use-installer: true
       - uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}

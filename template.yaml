@@ -29,8 +29,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: checkmate-EventGatewayFunction
-      CodeUri: lambda/event/gateway
-      Handler: event-gateway
+      CodeUri: .
+      Handler: lambda/event/gateway
       Runtime: go1.x
       Architectures:
         - x86_64
@@ -44,8 +44,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: checkmate-EventTaskFunction
-      CodeUri: lambda/event/task
-      Handler: event-task
+      CodeUri: .
+      Handler: lambda/event/task
       Runtime: go1.x
       Architectures:
         - x86_64
@@ -53,8 +53,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: checkmate-InteractionGatewayFunction
-      CodeUri: lambda/interaction/gateway
-      Handler: interaction-gateway
+      CodeUri: .
+      Handler: lambda/interaction/gateway
       Runtime: go1.x
       Architectures:
         - x86_64
@@ -68,8 +68,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: checkmate-InteractionTaskFunction
-      CodeUri: lambda/interaction/task
-      Handler: interaction-task
+      CodeUri: .
+      Handler: lambda/interaction/task
       Runtime: go1.x
       Architectures:
         - x86_64
@@ -77,8 +77,8 @@ Resources:
     Type: "AWS::Serverless::Function"
     Properties:
       FunctionName: checkmate-ShufflerFunction
-      CodeUri: lambda/shuffler
-      Handler: shuffler
+      CodeUri: .
+      Handler: lambda/shuffler
       Runtime: go1.x
       Events:
         CWSchedule:

@@ -1,7 +1,7 @@
 .PHONY: build
 
 build:
-	sam build
+	sam build --use-container
 api:
 	sam local start-api --env-vars env.json
 start:

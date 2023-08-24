@@ -16,7 +16,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
       # sam build
-      - run: sam build --use-container
+      - run: sam build --use-container -buildvcs=false
       # sam deploy
       - run: |
           sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --region ${{ secrets.AWS_REGION }} --parameter-overrides AwsRegion=${{ secrets.AWS_REGION }} SlackBotToken=${{ secrets.SLACK_BOT_TOKEN }}

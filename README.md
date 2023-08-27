@@ -1,3 +1,3 @@
-# Accountability Bot
+# CheckBot
 
-Accountability partner bot for checkmate africa's slack workspace
+Checkmate Africa's slack workspace bot

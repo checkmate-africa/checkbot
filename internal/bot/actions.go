@@ -168,13 +168,14 @@ func PublishAppHome(userId string, isNewUser bool) {
 		partner, _ = store.GetPartner(profile.Email)
 	}
 
-	log.Println("publishing app home")
 	view := blocks.AppHomeContent(partner, user)
 
 	if _, err = api.PublishView(userId, view, ""); err != nil {
 		log.Println(err)
 		return
 	}
+
+	log.Println("published app home")
 }
 
 func SendNewPairShuffleAnnouncement(pairs store.Pairs) error {

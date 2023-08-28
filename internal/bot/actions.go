@@ -164,13 +164,11 @@ func PublishAppHome(userId string, isNewUser bool) {
 	var partner *store.User
 
 	if !isNewUser {
-		u, _ := store.GetUser(profile.Email)
-		p, _ := store.GetPartner(profile.Email)
-
-		user = u
-		partner = p
+		user, _ = store.GetUser(profile.Email)
+		partner, _ = store.GetPartner(profile.Email)
 	}
 
+	log.Println("publishing app home")
 	view := blocks.AppHomeContent(partner, user)
 
 	if _, err = api.PublishView(userId, view, ""); err != nil {

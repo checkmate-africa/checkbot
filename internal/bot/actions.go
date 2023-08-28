@@ -61,7 +61,7 @@ func ShowBackgroundDataModal(p slack.InteractionCallback) {
 	}
 }
 
-func SaveBackgroundData(p slack.InteractionCallback, newUser bool) {
+func SaveBackgroundData(p slack.InteractionCallback, isNewUser bool) {
 	values := p.View.State.Values
 	form := blocks.SignUpform
 
@@ -99,7 +99,7 @@ func SaveBackgroundData(p slack.InteractionCallback, newUser bool) {
 
 	store.SaveUserData(userData)
 
-	if newUser {
+	if isNewUser {
 		originMsgParams := strings.Split(p.View.PrivateMetadata, utils.MetedataSeperator)
 		if _, _, err := api.DeleteMessage(originMsgParams[0], originMsgParams[1]); err != nil {
 			log.Println(err)
@@ -147,7 +147,7 @@ func DeleteMessageByReaction(body string) {
 	}
 }
 
-func PublishAppHome(userId string, newUser bool) {
+func PublishAppHome(userId string, isNewUser bool) {
 	params := slack.GetUserProfileParameters{
 		UserID:        userId,
 		IncludeLabels: false,
@@ -163,14 +163,17 @@ func PublishAppHome(userId string, newUser bool) {
 	var user *store.User
 	var partner *store.User
 
-	if !newUser {
-		user, _ = store.GetUser(profile.Email)
-		partner, _ = store.GetPartner(profile.Email)
+	if !isNewUser {
+		u, _ := store.GetUser(profile.Email)
+		p, _ := store.GetPartner(profile.Email)
+
+		user = u
+		partner = p
 	}
 
 	view := blocks.AppHomeContent(partner, user)
 
-	if _, err = api.PublishView(params.UserID, view, ""); err != nil {
+	if _, err = api.PublishView(userId, view, ""); err != nil {
 		log.Println(err)
 		return
 	}

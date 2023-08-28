@@ -4,7 +4,7 @@ include lambda.mk
 
 build:
 	sam build --use-container
-api:
+start-api:
 	sam local start-api --env-vars env.json
-start:
+start-lambda:
 	sam local start-lambda --env-vars env.json

@@ -83,7 +83,7 @@ func AppHomeContent(partner *store.User, user *store.User) slack.HomeTabViewRequ
 	var headerCta *slack.Accessory
 
 	if user == nil {
-		subtitleText = "You haven't signed up yet, please check the messages tab."
+		subtitleText = "You're yet to sign up, please check the messages tab."
 	} else {
 		subtitleText = "No partner until next week."
 

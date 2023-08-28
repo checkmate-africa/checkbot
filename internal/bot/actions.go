@@ -208,6 +208,4 @@ func publishAppHome(userId string, isNewUser bool) {
 		log.Println(err)
 		return
 	}
-
-	log.Println(view.ViewType())
 }

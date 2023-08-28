@@ -33,6 +33,8 @@ func InviteToSignup(userId string) {
 		log.Println(err)
 		return
 	}
+
+	publishAppHome(userId, true)
 }
 
 func ShowBackgroundDataModal(p slack.InteractionCallback) {
@@ -115,7 +117,7 @@ func SaveBackgroundData(p slack.InteractionCallback, isNewUser bool) {
 
 		go func() {
 			defer wg.Done()
-			PublishAppHome(user.UserID, true)
+			publishAppHome(user.UserID, true)
 		}()
 
 		wg.Wait()
@@ -147,7 +149,39 @@ func DeleteMessageByReaction(body string) {
 	}
 }
 
-func PublishAppHome(userId string, isNewUser bool) {
+func SendNewPairShuffleAnnouncement(pairs store.Pairs) error {
+	message := blocks.PairShuffleAnnouncementMessage(pairs)
+
+	if _, _, err := api.PostMessage(utils.ChannelIdAnnouncements, message, slack.MsgOptionAsUser(slack.DEFAULT_MESSAGE_ASUSER)); err != nil {
+		log.Println(err)
+		return err
+	}
+
+	return nil
+}
+
+func SendPairShuffleNotification(pairedUsers []store.PairedUser) {
+	var wg sync.WaitGroup
+
+	for _, user := range pairedUsers {
+		wg.Add(1)
+
+		go func(u store.PairedUser) {
+			defer wg.Done()
+			message := blocks.PairNotificationMessage(u)
+
+			publishAppHome(u.SlackId, false)
+
+			if _, _, err := api.PostMessage(u.SlackId, message, slack.MsgOptionAsUser(slack.DEFAULT_MESSAGE_ASUSER)); err != nil {
+				log.Println(err)
+			}
+		}(user)
+	}
+
+	wg.Wait()
+}
+
+func publishAppHome(userId string, isNewUser bool) {
 	params := slack.GetUserProfileParameters{
 		UserID:        userId,
 		IncludeLabels: false,
@@ -175,37 +209,5 @@ func PublishAppHome(userId string, isNewUser bool) {
 		return
 	}
 
-	log.Println("published app home")
-}
-
-func SendNewPairShuffleAnnouncement(pairs store.Pairs) error {
-	message := blocks.PairShuffleAnnouncementMessage(pairs)
-
-	if _, _, err := api.PostMessage(utils.ChannelIdAnnouncements, message, slack.MsgOptionAsUser(slack.DEFAULT_MESSAGE_ASUSER)); err != nil {
-		log.Println(err)
-		return err
-	}
-
-	return nil
-}
-
-func SendPairShuffleNotification(pairedUsers []store.PairedUser) {
-	var wg sync.WaitGroup
-
-	for _, user := range pairedUsers {
-		wg.Add(1)
-
-		go func(u store.PairedUser) {
-			defer wg.Done()
-			message := blocks.PairNotificationMessage(u)
-
-			PublishAppHome(u.SlackId, false)
-
-			if _, _, err := api.PostMessage(u.SlackId, message, slack.MsgOptionAsUser(slack.DEFAULT_MESSAGE_ASUSER)); err != nil {
-				log.Println(err)
-			}
-		}(user)
-	}
-
-	wg.Wait()
+	log.Println(view.ViewType())
 }

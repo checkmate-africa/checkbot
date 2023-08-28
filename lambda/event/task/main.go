@@ -26,7 +26,6 @@ func handler(req utils.InvokeRequestPayload) error {
 		}
 
 		bot.InviteToSignup(data.User.ID)
-		bot.PublishAppHome(data.User.ID, true)
 	case *slackevents.MemberJoinedChannelEvent:
 		var data bot.ChannelJoinEventData
 
@@ -37,7 +36,6 @@ func handler(req utils.InvokeRequestPayload) error {
 
 		if data.Channel == utils.ChannelIdManualSignup {
 			bot.InviteToSignup(data.User)
-			bot.PublishAppHome(data.User, true)
 		}
 	case *slackevents.ReactionAddedEvent:
 		bot.DeleteMessageByReaction(req.Body)

@@ -160,8 +160,8 @@ func PublishAppHome(userId string, newUser bool) {
 		return
 	}
 
-	var user *store.User
-	var partner *store.User
+	var user *store.User = nil
+	var partner *store.User = nil
 
 	if !newUser {
 		user, _ = store.GetUser(profile.Email)

@@ -29,12 +29,12 @@ func VerifyUrl(body string) *slackevents.ChallengeResponse {
 func InviteToSignup(userId string) {
 	message := blocks.SignupInviteMessage(userId)
 
+	publishAppHome(userId, true)
+
 	if _, _, err := api.PostMessage(userId, message); err != nil {
 		log.Println(err)
 		return
 	}
-
-	publishAppHome(userId, true)
 }
 
 func ShowBackgroundDataModal(p slack.InteractionCallback) {

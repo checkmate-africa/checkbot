@@ -8,7 +8,7 @@ import (
 
 func SignupInviteMessage(userId string) slack.MsgOption {
 	textContent :=
-		"Hola <@" + userId + ">! :tada: \n\nWelcome to checkmate, we are thrilled to have you here in our community. Our primary goal here is to stay productive, skill up, connect and collaborate with peers. \n\nLet's get you signed up for accountability pairings."
+		"Hola <@" + userId + ">! :tada: \n\nWelcome to Checkmate, we are thrilled to have you here in our community. Our primary goal here is to stay productive, skill up, connect and collaborate with peers. \n\nLet's get you signed up."
 
 	paragraphs := slack.NewTextBlockObject("mrkdwn", textContent, false, false)
 	textBlock := slack.NewSectionBlock(paragraphs, nil, nil)
@@ -47,7 +47,7 @@ func SignupSuccessMessage(userId string) slack.MsgOption {
 }
 
 func PairShuffleAnnouncementMessage(pairs store.Pairs) slack.MsgOption {
-	introText := "Unveiling This Week's Dynamic Duos! :tada: \n\nHi checkers! Your favourite bot is here again with the weekly shuffle and I am pleased to announce that I have matched y'all with new accountability partners according to your skill categories. \n\n Say goodbye to old buddies and prepare to collaborate, learn, share knowledge and stay productive with someone new. \n\n \n"
+	introText := "Unveiling This Week's Dynamic Duos! :tada: \n\nHi everyone! Your favourite is here again with the weekly shuffle and I am pleased to announce that I have matched y'all with new accountability partners according to your skill categories. \n\n Say goodbye to old buddies and prepare to collaborate, learn, share knowledge and stay productive with someone new. \n\n \n"
 	closingText := "\n\n \nRemember to be awesome, respectful and not violate our community guidelines because we'll kick you out if you do (hehe not kidding), Have an amazing week ahead! :rocket:"
 
 	introParagraph := slack.NewTextBlockObject("mrkdwn", introText, false, false)

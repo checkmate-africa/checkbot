@@ -115,7 +115,7 @@ func SaveBackgroundData(p slack.InteractionCallback, newUser bool) {
 
 		go func() {
 			defer wg.Done()
-			PublishAppHome(user.UserID)
+			PublishAppHome(user.UserID, true)
 		}()
 
 		wg.Wait()
@@ -147,7 +147,7 @@ func DeleteMessageByReaction(body string) {
 	}
 }
 
-func PublishAppHome(userId string) {
+func PublishAppHome(userId string, newUser bool) {
 	params := slack.GetUserProfileParameters{
 		UserID:        userId,
 		IncludeLabels: false,
@@ -160,8 +160,14 @@ func PublishAppHome(userId string) {
 		return
 	}
 
-	user, _ := store.GetUser(profile.Email)
-	partner, _ := store.GetPartner(profile.Email)
+	var user *store.User
+	var partner *store.User
+
+	if !newUser {
+		user, _ = store.GetUser(profile.Email)
+		partner, _ = store.GetPartner(profile.Email)
+	}
+
 	view := blocks.AppHomeContent(partner, user)
 
 	if _, err = api.PublishView(params.UserID, view, ""); err != nil {
@@ -190,6 +196,8 @@ func SendPairShuffleNotification(pairedUsers []store.PairedUser) {
 		go func(u store.PairedUser) {
 			defer wg.Done()
 			message := blocks.PairNotificationMessage(u)
+
+			PublishAppHome(u.SlackId, false)
 
 			if _, _, err := api.PostMessage(u.SlackId, message, slack.MsgOptionAsUser(slack.DEFAULT_MESSAGE_ASUSER)); err != nil {
 				log.Println(err)

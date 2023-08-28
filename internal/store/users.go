@@ -51,7 +51,7 @@ func GetUser(email string) (*User, error) {
 	}
 
 	if result.Item == nil {
-		msg := "could not user with email " + email
+		msg := "could not find user with email " + email
 		log.Println(msg)
 
 		return nil, err

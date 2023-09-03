@@ -41,6 +41,7 @@ var SkillDomains = map[string][]string{
 
 	"data-science-and-ai": {
 		"Data Science/AI/ML",
+		"Data Analytics",
 	},
 
 	"content-and-management": {
@@ -48,6 +49,9 @@ var SkillDomains = map[string][]string{
 		"Writing/Technical Writing",
 		"Webflow/Wordpress",
 		"Product Management",
+		"Digital Marketing",
+		"Social Media Management",
+		"Community Management",
 		"Marketing",
 	},
 

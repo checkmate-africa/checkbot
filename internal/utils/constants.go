@@ -35,6 +35,7 @@ var SkillDomains = map[string][]string{
 		"Backend Development",
 		"Mobile Development",
 		"Cloud Engineering",
+		"Blockchain Engineering",
 		"DevOps/SRE",
 	},
 
@@ -47,6 +48,7 @@ var SkillDomains = map[string][]string{
 		"Writing/Technical Writing",
 		"Webflow/Wordpress",
 		"Product Management",
+		"Marketing",
 	},
 
 	"security-and-compliance": {

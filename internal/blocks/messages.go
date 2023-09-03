@@ -47,7 +47,7 @@ func SignupSuccessMessage(userId string) slack.MsgOption {
 }
 
 func PairShuffleAnnouncementMessage(pairs store.Pairs) slack.MsgOption {
-	introText := "Unveiling This Week's Dynamic Duos! :tada: \n\nHi everyone! Your favourite is here again with the weekly shuffle and I am pleased to announce that I have matched y'all with new accountability partners according to your skill categories. \n\n Say goodbye to old buddies and prepare to collaborate, learn, share knowledge and stay productive with someone new. \n\n \n"
+	introText := "Unveiling This Week's Dynamic Duos! :tada: \n\nHi everyone! The weekly shuffle is here again and I am pleased to announce that I have matched y'all with new accountability partners according to your skill categories. \n\nPrepare to collaborate, learn, share knowledge and stay productive with someone new. \n\n \n"
 	closingText := "\n\n \nRemember to be awesome, respectful and not violate our community guidelines because we'll kick you out if you do (hehe not kidding), Have an amazing week ahead! :rocket:"
 
 	introParagraph := slack.NewTextBlockObject("mrkdwn", introText, false, false)
@@ -81,7 +81,7 @@ func PairShuffleAnnouncementMessage(pairs store.Pairs) slack.MsgOption {
 }
 
 func PairNotificationMessage(user store.PairedUser) slack.MsgOption {
-	text := "Hi there :wave: \n\n Your new accountability partner for this week is <@" + user.Partner.SlackId + ">. \n\n You can navigate to the home tab to view more details about them. Remember to be respectful and adhere to our community guidelines. Have a productive week ahead!"
+	text := "Hi there :wave: \n\nYour accountability partner for this week is <@" + user.Partner.SlackId + ">. \n\nYou can navigate to the home tab to view more details about them. Remember to be respectful and adhere to our community guidelines. Have a productive week ahead!"
 
 	paragraph := slack.NewTextBlockObject("mrkdwn", text, false, false)
 	block := slack.NewSectionBlock(paragraph, nil, nil)

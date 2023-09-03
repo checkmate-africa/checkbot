@@ -95,7 +95,7 @@ func GetPartner(email string) (*User, error) {
 		return nil, err
 	}
 
-	pair := PairedUser{}
+	var pair PairedUser
 
 	if err = dynamodbattribute.UnmarshalMap(result.Item, &pair); err != nil {
 		log.Println(err)

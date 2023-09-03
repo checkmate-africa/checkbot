@@ -21,7 +21,7 @@ func GetUsers() (*[]User, error) {
 	}
 
 	for _, item := range result.Items {
-		user := User{}
+		var user User
 
 		if err = dynamodbattribute.UnmarshalMap(item, &user); err != nil {
 			log.Println(err)

@@ -143,10 +143,16 @@ func partnerProfileBlocks(p *store.User) (blocks []slack.Block) {
 	expfieldSlice = append(append(expfieldSlice, expText), spacer)
 	expBlock := slack.NewSectionBlock(nil, expfieldSlice, nil)
 
+	confirmationBlock := slack.ConfirmationBlockObject{
+		Title: slack.NewTextBlockObject("mrkdwn", "Report Abuse", false, false),
+		Text:  slack.NewTextBlockObject("mrkdwn", "This action will initiate an abuse complaint against "+p.Name+". You'll be starting a direct conversation with an admin where you can state your complaints and provide evidence that your partner has violated our community guidelines.", false, false),
+	}
+
 	button1Args := slack.ButtonBlockElement{
-		Type: "button",
-		URL:  "https://google.com",
-		Text: slack.NewTextBlockObject("plain_text", "Report abuse", false, false),
+		Type:    "button",
+		URL:     "slack://user?team=" + utils.TeamID + "&id=U05PQVDGFB5",
+		Text:    slack.NewTextBlockObject("plain_text", "Report abuse", false, false),
+		Confirm: &confirmationBlock,
 	}
 
 	button2Args := slack.ButtonBlockElement{

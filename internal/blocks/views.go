@@ -145,7 +145,7 @@ func partnerProfileBlocks(p *store.User) (blocks []slack.Block) {
 
 	button1Args := slack.ButtonBlockElement{
 		Type: "button",
-		URL:  "https://google.com",
+		URL:  "https://forms.gle/pt8LAwjgNK8GrmweA",
 		Text: slack.NewTextBlockObject("plain_text", "Report abuse", false, false),
 	}
 

@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: "2010-09-09"
+AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
   cab-app
@@ -82,7 +82,7 @@ Resources:
       Architectures:
         - x86_64
   ShufflerFunction:
-    Type: "AWS::Serverless::Function"
+    Type: 'AWS::Serverless::Function'
     Metadata:
       BuildMethod: makefile
     Properties:
@@ -94,7 +94,7 @@ Resources:
         CWSchedule:
           Type: Schedule
           Properties:
-            Schedule: "cron(0 6 ? * 1 *)"
+            Schedule: 'cron(0 6 ? * SUN/2 *)'
             Name: AccountabilityShuffleSchedule
             Description: cron to run the shuffler function weekly
   UsersTable:

@@ -7,6 +7,7 @@ type User struct {
 	ExperienceLevel string
 	Gender          string
 	SlackId         string
+	RetainPartner   bool
 }
 
 type Pairs [][]User

@@ -11,6 +11,30 @@ func GeneratePairs(users []store.User) [][]store.User {
 	var pairs store.Pairs
 	var pairedUsers = make(map[int]bool)
 
+	/* handle users that wants
+	to retain partner
+	*/
+	currentPairs, _ := store.GetAllPairs()
+	for i, userA := range users {
+		if pairedUsers[i] || !userA.RetainPartner {
+			continue
+		}
+
+		currentPartner := utils.FindCurrentPartner(currentPairs, userA.Email)
+		if currentPartner == nil {
+			continue
+		}
+
+		for j, userB := range users {
+			if userB.Email == currentPartner.Email && userB.RetainPartner {
+				pairs = append(pairs, []store.User{userA, userB})
+				pairedUsers[i] = true
+				pairedUsers[j] = true
+				break
+			}
+		}
+	}
+
 	/* create pairs of users with
 	at least one matching skill category
 	*/

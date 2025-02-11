@@ -6,6 +6,7 @@ const (
 	EnvSlackToken                 = "SlackBotToken"
 	EnvSamLocal                   = "AWS_SAM_LOCAL"
 	ActionIdOpenModal             = "actionId-openModal"
+	ActionIdToggleRetention       = "actionId-toggleRetention"
 	BlockIdSignupButton           = "blockId-signupBtn"
 	BlockIdSettingsButton         = "blockId-settingsBtn"
 	TeamID                        = "T01DPL0FJSH"

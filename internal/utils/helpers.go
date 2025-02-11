@@ -4,6 +4,8 @@ import (
 	"os"
 	"strconv"
 	"time"
+
+	"github.com/checkmateafrica/accountability-bot/internal/store"
 )
 
 func IsLocalEnv() bool {
@@ -55,4 +57,13 @@ func FindParentCategory(skill string) string {
 		}
 	}
 	return ""
+}
+
+func FindCurrentPartner(pairs []store.PairedUser, email string) *store.User {
+	for _, pair := range pairs {
+		if pair.Email == email {
+			return &pair.Partner
+		}
+	}
+	return nil
 }

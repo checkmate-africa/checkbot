@@ -109,13 +109,29 @@ func AppHomeContent(partner *store.User, user *store.User) slack.HomeTabViewRequ
 		header := slack.NewSectionBlock(headerText, nil, headerCta, headerArgs)
 
 		profileBlocks := partnerProfileBlocks(partner)
+
+		// partner retention toggle
+		retentionText := slack.NewTextBlockObject("mrkdwn", "*Partner Retention*\nKeep current partner for next rotation?", false, false)
+		var retainText string
+		if user.RetainPartner {
+			retainText = "Yes ✓"
+		} else {
+			retainText = "No ✗"
+		}
+		retentionToggle := slack.NewButtonBlockElement(
+			utils.ActionIdToggleRetention,
+			"",
+			slack.NewTextBlockObject("plain_text", retainText, false, false),
+		)
+		retentionSection := slack.NewSectionBlock(retentionText, nil, slack.NewAccessory(retentionToggle))
+
 		defaultBlocks := []slack.Block{
 			header,
 			divider,
 		}
 
 		blocks = slack.Blocks{
-			BlockSet: append(defaultBlocks, profileBlocks...),
+			BlockSet: append(append(defaultBlocks, profileBlocks...), retentionSection, divider),
 		}
 	}
 

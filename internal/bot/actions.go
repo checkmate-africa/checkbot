@@ -29,7 +29,7 @@ func VerifyUrl(body string) *slackevents.ChallengeResponse {
 func InviteToSignup(userId string) {
 	message := blocks.SignupInviteMessage(userId)
 
-	publishAppHome(userId, true)
+	PublishAppHome(userId, true)
 
 	if _, _, err := api.PostMessage(userId, message); err != nil {
 		log.Println(err)
@@ -117,7 +117,7 @@ func SaveBackgroundData(p slack.InteractionCallback, isNewUser bool) {
 
 		go func() {
 			defer wg.Done()
-			publishAppHome(user.UserID, true)
+			PublishAppHome(user.UserID, true)
 		}()
 
 		wg.Wait()
@@ -170,7 +170,7 @@ func SendPairShuffleNotification(pairedUsers []store.PairedUser) {
 			defer wg.Done()
 			message := blocks.PairNotificationMessage(u)
 
-			publishAppHome(u.SlackId, false)
+			PublishAppHome(u.SlackId, false)
 
 			if _, _, err := api.PostMessage(u.SlackId, message, slack.MsgOptionAsUser(slack.DEFAULT_MESSAGE_ASUSER)); err != nil {
 				log.Println(err)
@@ -181,7 +181,7 @@ func SendPairShuffleNotification(pairedUsers []store.PairedUser) {
 	wg.Wait()
 }
 
-func publishAppHome(userId string, isNewUser bool) {
+func PublishAppHome(userId string, isNewUser bool) {
 	params := slack.GetUserProfileParameters{
 		UserID:        userId,
 		IncludeLabels: false,

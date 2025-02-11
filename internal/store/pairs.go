@@ -103,3 +103,27 @@ func GetPartner(email string) (*User, error) {
 
 	return &pair.Partner, nil
 }
+
+func GetAllPairs() ([]PairedUser, error) {
+	var pairs []PairedUser
+
+	result, err := DB.Scan(&dynamodb.ScanInput{
+		TableName: aws.String(PairsTable),
+	})
+
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	for _, item := range result.Items {
+		var pair PairedUser
+		if err = dynamodbattribute.UnmarshalMap(item, &pair); err != nil {
+			log.Println(err)
+			continue
+		}
+		pairs = append(pairs, pair)
+	}
+
+	return pairs, nil
+}

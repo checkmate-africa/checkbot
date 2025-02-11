@@ -86,3 +86,26 @@ func SaveUserData(u User) error {
 
 	return nil
 }
+func UpdateUserRentention(email string, retain bool) error {
+	input := &dynamodb.UpdateItemInput{
+		TableName: aws.String(UsersTable),
+		Key: map[string]*dynamodb.AttributeValue{
+			"Email": {
+				S: aws.String(email),
+			},
+		},
+		UpdateExpression: aws.String("SET RetainPartner = :r"),
+		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
+			":r": {
+				BOOL: aws.Bool(retain),
+			},
+		},
+	}
+
+	_, err := DB.UpdateItem(input)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	return nil
+}

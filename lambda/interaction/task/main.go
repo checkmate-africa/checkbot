@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/checkmateafrica/accountability-bot/internal/bot"
@@ -10,6 +11,8 @@ import (
 	"github.com/checkmateafrica/accountability-bot/services"
 	"github.com/slack-go/slack"
 )
+
+var api = slack.New(os.Getenv(utils.EnvSlackToken))
 
 func handler(req utils.InvokeRequestPayload) error {
 	payload := req.InteractionPayload
@@ -48,10 +51,40 @@ func handleBlockAction(p slack.InteractionCallback) {
 			payload := p
 			payload.BlockID = blockAction.BlockID
 			bot.ShowBackgroundDataModal(payload)
+		case utils.ActionIdToggleRetention:
+			handleRetnetionToggle(p)
 		default:
 			log.Println("unhandled interaction")
 		}
 	}
+}
+
+func handleRetnetionToggle(p slack.InteractionCallback) {
+	params := slack.GetUserProfileParameters{
+		UserID:        p.User.ID,
+		IncludeLabels: false,
+	}
+
+	profile, err := api.GetUserProfile(&params)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	user, err := store.GetUser(profile.Email)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	newRetention := !user.RetainPartner
+	err = store.UpdateUserRentention(profile.Email, newRetention)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	bot.PublishAppHome(p.User.ID, false)
 }
 
 func main() {

@@ -14,12 +14,12 @@ func GetNextDayOfWeek(dayOfWeek int) (day string, month string, year string, day
 	var (
 		CurrentDate   = time.Now()
 		DaysUntilNext = (dayOfWeek + 7 - int(CurrentDate.Weekday())) % 7
-		NextDate      = CurrentDate.AddDate(0, 0, DaysUntilNext)
+		NextDate      = CurrentDate.AddDate(0, 0, DaysUntilNext+7) // extra 7 days
 	)
 
 	y, m, d := NextDate.Date()
 
-	return strconv.Itoa(d), m.String(), strconv.Itoa(y), strconv.Itoa(DaysUntilNext)
+	return strconv.Itoa(d), m.String(), strconv.Itoa(y), strconv.Itoa(DaysUntilNext + 7)
 }
 
 func FindCommonSkill(skillsA, skillsB []string) string {
